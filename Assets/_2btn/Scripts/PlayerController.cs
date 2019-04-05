@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         currentPos = rb.position;
 
-        rb.freezeRotation = true;
-        rb.useGravity = false;
+        // rb.freezeRotation = true; // I like the rotation on collision
+        // rb.useGravity = false; // Set in editor
     }
 
     // Update is called once per frame
@@ -35,13 +35,12 @@ public class PlayerController : MonoBehaviour
 
     void GetInput()
     {
-        if (Input.GetButtonDown("Left"))
-        {
+        if (Input.GetButtonDown("Left")) {
             MovePlayer(-laneWideness);
             FindCurrentSide();
         }
-        if (Input.GetButtonDown("Right"))
-        {
+
+        if (Input.GetButtonDown("Right")) {
             MovePlayer(laneWideness);
             FindCurrentSide();
         }
@@ -49,48 +48,34 @@ public class PlayerController : MonoBehaviour
 
     void FindCurrentSide()
     {
-        if (currentPos.x == 6 && currentPos.y == -6)
-        {
-            if (currentSide == SIDE.BOTTOM)
-            {
+        if (currentPos.x == 6 && currentPos.y == -6) {
+            if (currentSide == SIDE.BOTTOM) {
                 currentSide = SIDE.RIGHT;
-            }
-            else
-            {
+            } else {
                 currentSide = SIDE.BOTTOM;
             }
         }
-        if (currentPos.x == -6 && currentPos.y == -6)
-        {
-            if (currentSide == SIDE.BOTTOM)
-            {
-                currentSide = SIDE.LEFT;
-            }
-            else
-            {
-                currentSide = SIDE.BOTTOM;
-            }
 
-        }
-        if (currentPos.x == 6 && currentPos.y == 6)
-        {
-            if (currentSide == SIDE.RIGHT)
-            {
-                currentSide = SIDE.TOP;
+        if (currentPos.x == -6 && currentPos.y == -6) {
+            if (currentSide == SIDE.BOTTOM) {
+                currentSide = SIDE.LEFT;
+            } else {
+                currentSide = SIDE.BOTTOM;
             }
-            else
-            {
+        }
+
+        if (currentPos.x == 6 && currentPos.y == 6) {
+            if (currentSide == SIDE.RIGHT) {
+                currentSide = SIDE.TOP;
+            } else {
                 currentSide = SIDE.RIGHT;
             }
         }
-        if (currentPos.x == -6 && currentPos.y == 6)
-        {
-            if (currentSide == SIDE.TOP)
-            {
+
+        if (currentPos.x == -6 && currentPos.y == 6) {
+            if (currentSide == SIDE.TOP) {
                 currentSide = SIDE.LEFT;
-            }
-            else
-            {
+            } else {
                 currentSide = SIDE.TOP;
             }
         }
