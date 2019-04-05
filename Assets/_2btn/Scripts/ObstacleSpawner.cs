@@ -39,6 +39,7 @@ public class ObstacleSpawner : MonoBehaviour {
     IEnumerator SpawnObstacle() {
         hasSpawned = true;
         
+        // TODO: Stay on ground until player begins to rotate around walls
         System.Array values = SpawnWall.GetValues(typeof(SpawnWall));
         SpawnWall randomWall = (SpawnWall)values.GetValue(rand.Next(values.Length));
 
