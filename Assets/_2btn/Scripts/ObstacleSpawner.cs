@@ -59,13 +59,10 @@ public class ObstacleSpawner : MonoBehaviour {
             xPos = 6;
         }
 
-        Debug.Log("Spawn Pos X: " + xPos);
-        Debug.Log("Spawn Pos Y: " + yPos);
-
         // TODO: obstacles larger than 1 unit
 
         // magic number 88 because my wife loves 8s
-        GameObject obstacle = Instantiate(obstaclePrefab, new Vector3(xPos, yPos, 88.0f), Quaternion.identity);
+        Instantiate(obstaclePrefab, new Vector3(xPos, yPos, 88.0f), Quaternion.identity);
 
         yield return new WaitForSeconds(spawnTime);
 
