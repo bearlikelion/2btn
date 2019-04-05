@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 218621962}
   - component: {fileID: 218621961}
   - component: {fileID: 218621966}
+  - component: {fileID: 218621965}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -282,6 +283,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &218621965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 218621960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1fdf6c481c13b478c6dde1292b2245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laneWideness: 1
 --- !u!54 &218621966
 Rigidbody:
   m_ObjectHideFlags: 0
