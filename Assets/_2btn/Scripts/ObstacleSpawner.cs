@@ -10,10 +10,23 @@ public class ObstacleSpawner : MonoBehaviour {
     [SerializeField]
     private GameObject obstaclePrefab;
 
-    private bool hasSpawned = false;
+    private bool hasSpawned = false;    
+    private System.Random rand;    
+    private float xPos, yPos;
+
+    private static int minP = -6;
+    private static int maxP = 7; // Random.Range is EXCLUSIVE for max with Integers (stupid unity)
+
+    enum SpawnWall {
+        Ground,
+        Left,
+        Right,
+        Ceil
+    };
 
 	// Use this for initialization
-	void Start () {        
+	void Start () {
+        rand = new System.Random();
 	}
 	
 	// Update is called once per frame
@@ -25,11 +38,32 @@ public class ObstacleSpawner : MonoBehaviour {
 
     IEnumerator SpawnObstacle() {
         hasSpawned = true;
+        
+        // TODO: Stay on ground until player begins to rotate around walls
+        System.Array values = SpawnWall.GetValues(typeof(SpawnWall));
+        SpawnWall randomWall = (SpawnWall)values.GetValue(rand.Next(values.Length));
 
-        // TODO: Spawn obstacles on random walls
+        Debug.Log("Spawn Wall: " + randomWall.ToString());
 
-        float xPos = Random.Range(-6.0f, 6.0f);
-        Instantiate(obstaclePrefab, new Vector3(xPos, 0, 88.0f), Quaternion.identity); // 88 magic number because my wife loves 8s
+        // Spawn Position
+        if (randomWall == SpawnWall.Ground) {                        
+            xPos = Random.Range(minP, maxP);
+            yPos = -6;            
+        } else if (randomWall == SpawnWall.Ceil) {            
+            xPos = Random.Range(minP, maxP);
+            yPos = 6;
+        } else if (randomWall == SpawnWall.Left) {                  
+            yPos = Random.Range(minP, maxP);
+            xPos = -6;
+        } else if (randomWall == SpawnWall.Right) {            
+            yPos = Random.Range(minP, maxP);
+            xPos = 6;
+        }
+
+        // TODO: obstacles larger than 1 unit
+
+        // magic number 88 because my wife loves 8s
+        Instantiate(obstaclePrefab, new Vector3(xPos, yPos, 88.0f), Quaternion.identity);
 
         yield return new WaitForSeconds(spawnTime);
 

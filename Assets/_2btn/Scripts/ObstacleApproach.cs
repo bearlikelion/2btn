@@ -20,8 +20,7 @@ public class ObstacleApproach : MonoBehaviour {
 	}
 
     private void FixedUpdate () {
-        rb.velocity -= transform.forward * objectSpeed * Time.deltaTime;
-        Debug.Log("Velocity: " + rb.velocity);
+        rb.velocity -= transform.forward * objectSpeed * Time.deltaTime;        
     }
 
     private void OnBecameInvisible () {
