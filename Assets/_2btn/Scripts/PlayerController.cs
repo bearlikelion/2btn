@@ -5,18 +5,23 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    //How wide the lanes are
+    //Wideness of the lanes
     public float laneWideness;
 
     private Rigidbody rb;
 
-    //current pos of the player
+    //Current player position
     private Vector3 currentPos;
 
-    enum SIDE { LEFT, RIGHT, TOP, BOTTOM };
+    public enum SIDE {
+        TOP,
+        LEFT,
+        RIGHT,
+        BOTTOM
+    };
 
     //Side the player is currently at
-    SIDE currentSide = SIDE.BOTTOM;
+    public SIDE currentSide = SIDE.BOTTOM;
 
     void Start()
     {
@@ -30,72 +35,58 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetInput();
+        ControlPlayer();
     }
 
-    void GetInput()
+    void ControlPlayer()
     {
         if (Input.GetButtonDown("Left"))
         {
-            MovePlayer(-laneWideness);
             FindCurrentSide();
+            MovePlayer(-laneWideness);
         }
         if (Input.GetButtonDown("Right"))
         {
-            MovePlayer(laneWideness);
             FindCurrentSide();
+            MovePlayer(laneWideness);
         }
     }
 
+    //Change side based on input, moves left <-> right depengin on button pressed
+    void ChangeSide(SIDE left, SIDE right)
+    {
+        if (Input.GetButtonDown("Left"))
+        {
+            currentSide = left;
+        }
+        if (Input.GetButtonDown("Right"))
+        {
+            currentSide = right;
+        }
+    }
+
+    //If player is in specific position check for input and change side
     void FindCurrentSide()
     {
         if (currentPos.x == 6 && currentPos.y == -6)
         {
-            if (currentSide == SIDE.BOTTOM)
-            {
-                currentSide = SIDE.RIGHT;
-            }
-            else
-            {
-                currentSide = SIDE.BOTTOM;
-            }
+            ChangeSide(SIDE.BOTTOM, SIDE.RIGHT);
         }
         if (currentPos.x == -6 && currentPos.y == -6)
         {
-            if (currentSide == SIDE.BOTTOM)
-            {
-                currentSide = SIDE.LEFT;
-            }
-            else
-            {
-                currentSide = SIDE.BOTTOM;
-            }
-
+            ChangeSide(SIDE.LEFT, SIDE.BOTTOM);
         }
         if (currentPos.x == 6 && currentPos.y == 6)
         {
-            if (currentSide == SIDE.RIGHT)
-            {
-                currentSide = SIDE.TOP;
-            }
-            else
-            {
-                currentSide = SIDE.RIGHT;
-            }
+            ChangeSide(SIDE.RIGHT, SIDE.TOP);
         }
         if (currentPos.x == -6 && currentPos.y == 6)
         {
-            if (currentSide == SIDE.TOP)
-            {
-                currentSide = SIDE.LEFT;
-            }
-            else
-            {
-                currentSide = SIDE.TOP;
-            }
+            ChangeSide(SIDE.TOP, SIDE.LEFT);
         }
     }
 
+    //Move player based on side
     void MovePlayer(float moveDistance)
     {
         switch (currentSide)
@@ -115,5 +106,12 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.MovePosition(currentPos);
+    }
+
+    void RotatePlayer(float angle)
+    {
+        Quaternion currentRot = rb.rotation;
+        currentRot *= Quaternion.Euler(0, 0, angle);
+        rb.rotation = currentRot;
     }
 }
