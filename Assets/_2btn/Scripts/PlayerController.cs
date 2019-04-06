@@ -13,6 +13,13 @@ public class PlayerController : MonoBehaviour
     //current pos of the player
     private Vector3 currentPos;
 
+    private Camera cam;
+    private Vector3 camPosition;
+    private Quaternion camRotation;
+
+    [SerializeField]
+    private float transitionTime = 15.0f;
+
     enum SIDE { LEFT, RIGHT, TOP, BOTTOM };
 
     //Side the player is currently at
@@ -20,8 +27,11 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        currentPos = rb.position;
+        cam = Camera.main;
+        camPosition = new Vector3(0, -3, -15);
+
+        rb = GetComponent<Rigidbody>();        
+        currentPos = rb.position;        
 
         // rb.freezeRotation = true; // I like the rotation on collision
         // rb.useGravity = false; // Set in editor
@@ -33,8 +43,16 @@ public class PlayerController : MonoBehaviour
         GetInput();
     }
 
-    void GetInput()
-    {
+    void LateUpdate () {
+        // if RotateCamera modifies camPosition Lerp to new position
+        if (camPosition != cam.transform.position) {
+            cam.transform.position = Vector3.Lerp(cam.transform.position, camPosition, transitionTime * Time.deltaTime);
+            cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, camRotation, transitionTime * Time.deltaTime);
+        }            
+    }
+
+    void GetInput() 
+    { 
         if (Input.GetButtonDown("Left")) {
             MovePlayer(-laneWideness);
             FindCurrentSide();
@@ -46,11 +64,32 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void RotateCamera () {
+        switch (currentSide) {
+            case SIDE.BOTTOM:
+                camPosition = new Vector3(0, -3, -15);
+                camRotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case SIDE.LEFT:
+                camPosition = new Vector3(-3, 0, -15);
+                camRotation = Quaternion.Euler(0, 0, -90);
+                break;
+            case SIDE.TOP:
+                camPosition = new Vector3(0, 3, -15);
+                camRotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case SIDE.RIGHT:
+                camPosition = new Vector3(3, 0, -15);
+                camRotation = Quaternion.Euler(0, 0, 90);
+                break;
+        }
+    }
+
     void FindCurrentSide()
     {
         if (currentPos.x == 6 && currentPos.y == -6) {
             if (currentSide == SIDE.BOTTOM) {
-                currentSide = SIDE.RIGHT;
+                currentSide = SIDE.RIGHT;                        
             } else {
                 currentSide = SIDE.BOTTOM;
             }
@@ -58,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
         if (currentPos.x == -6 && currentPos.y == -6) {
             if (currentSide == SIDE.BOTTOM) {
-                currentSide = SIDE.LEFT;
+                currentSide = SIDE.LEFT;                
             } else {
                 currentSide = SIDE.BOTTOM;
             }
@@ -99,6 +138,9 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
+        Debug.Log("Current Side: " + currentSide.ToString());
+
         rb.MovePosition(currentPos);
+        RotateCamera();
     }
 }
