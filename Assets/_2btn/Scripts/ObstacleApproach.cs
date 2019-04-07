@@ -11,7 +11,8 @@ public class ObstacleApproach : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        rb = GetComponent<Rigidbody>();        
+        rb = GetComponent<Rigidbody>();
+        Destroy(gameObject, 10f);
     }
 	
 	// Update is called once per frame
