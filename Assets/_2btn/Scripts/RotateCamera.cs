@@ -34,21 +34,21 @@ public class RotateCamera : MonoBehaviour {
         }
     }
 
-    void Rotate () {
-        switch (currentSide) {
-            case SIDE.BOTTOM:
+    public void Rotate () {        
+        switch (player.currentSide) {
+            case PlayerController.SIDE.BOTTOM:
                 camPosition = new Vector3(0, -3, -15);
                 camRotation = Quaternion.Euler(0, 0, 0);
                 break;
-            case SIDE.LEFT:
+            case PlayerController.SIDE.LEFT:
                 camPosition = new Vector3(-3, 0, -15);
                 camRotation = Quaternion.Euler(0, 0, -90);
                 break;
-            case SIDE.TOP:
+            case PlayerController.SIDE.TOP:
                 camPosition = new Vector3(0, 3, -15);
                 camRotation = Quaternion.Euler(0, 0, 180);
                 break;
-            case SIDE.RIGHT:
+            case PlayerController.SIDE.RIGHT:
                 camPosition = new Vector3(3, 0, -15);
                 camRotation = Quaternion.Euler(0, 0, 90);
                 break;

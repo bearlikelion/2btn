@@ -17,6 +17,8 @@ public class ObstacleSpawner : MonoBehaviour {
     private static int minP = -6;
     private static int maxP = 7; // Random.Range is EXCLUSIVE for max with Integers (stupid unity)
 
+    private PlayerController player;
+
     enum SpawnWall {
         Ground,
         Left,
@@ -27,7 +29,8 @@ public class ObstacleSpawner : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rand = new System.Random();
-	}
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -39,26 +42,27 @@ public class ObstacleSpawner : MonoBehaviour {
     IEnumerator SpawnObstacle() {
         hasSpawned = true;
         
-        // TODO: Stay on ground until player begins to rotate around walls
-        System.Array values = SpawnWall.GetValues(typeof(SpawnWall));
-        SpawnWall randomWall = (SpawnWall)values.GetValue(rand.Next(values.Length));
+        // TODO: Spawn on player side        
 
-        Debug.Log("Spawn Wall: " + randomWall.ToString());
-
-        // Spawn Position
-        if (randomWall == SpawnWall.Ground) {                        
-            xPos = Random.Range(minP, maxP);
-            yPos = -6;            
-        } else if (randomWall == SpawnWall.Ceil) {            
-            xPos = Random.Range(minP, maxP);
-            yPos = 6;
-        } else if (randomWall == SpawnWall.Left) {                  
-            yPos = Random.Range(minP, maxP);
-            xPos = -6;
-        } else if (randomWall == SpawnWall.Right) {            
-            yPos = Random.Range(minP, maxP);
-            xPos = 6;
-        }
+        // Spawn obstacles on Player.SIDE
+        switch (player.currentSide) {
+            case PlayerController.SIDE.BOTTOM:
+                xPos = Random.Range(minP, maxP);
+                yPos = -6;
+                break;
+            case PlayerController.SIDE.LEFT:
+                yPos = Random.Range(minP, maxP);
+                xPos = -6;
+                break;
+            case PlayerController.SIDE.TOP:
+                xPos = Random.Range(minP, maxP);
+                yPos = 6;
+                break;
+            case PlayerController.SIDE.RIGHT:
+                yPos = Random.Range(minP, maxP);
+                xPos = 6;
+                break;
+        }        
 
         // TODO: obstacles larger than 1 unit
 
