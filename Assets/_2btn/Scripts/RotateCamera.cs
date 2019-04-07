@@ -6,10 +6,10 @@ public class RotateCamera : MonoBehaviour {
 
     private PlayerController player;
 
-    private Camera cam;    
+    private Camera cam;
     private Vector3 camPosition;
     private GameObject dirLight;
-    private Quaternion camRotation, lightRotation;    
+    private Quaternion camRotation, lightRotation;
 
     [SerializeField]
     private float transitionTime = 15.0f;
@@ -24,11 +24,11 @@ public class RotateCamera : MonoBehaviour {
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update () {
+
+    }
 
     void LateUpdate () {
         // if RotateCamera modifies camPosition Lerp to new position
@@ -42,7 +42,7 @@ public class RotateCamera : MonoBehaviour {
         }
     }
 
-    public void Rotate () {        
+    public void Rotate () {
         switch (player.currentSide) {
             case PlayerController.SIDE.BOTTOM:
                 camPosition = new Vector3(0, -3, -15);

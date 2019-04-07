@@ -12,94 +12,116 @@ public class ObstacleSpawner : MonoBehaviour {
     private GameObject obstaclePrefab;
 
     [SerializeField]
-    private GameObject[] obstacles;    
+    private GameObject[] obstacles;
 
-    private bool hasSpawned = false;        
+    private bool hasSpawned = false, onPlayer = false;        
     private float xPos, yPos;
 
-    private int minP, maxP, spawnTick, spawnCount;
-
+    private int minP, maxP, spawnTick, spawnCount, totalSpawned;
+        
     private List<GameObject> _obstacles;
     private PlayerController player;
     private Quaternion spawnRot;
-    private System.Random rand;    
+    private System.Random rand;
 
-	// Use this for initialization
-	void Start () {        
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+    private List<string> spawnDirections = new List<string>{ "TOP", "RIGHT", "BOTTOM", "LEFT" };
+
+    // Use this for initialization
+    void Start () {        
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();        
+        _obstacles = obstacles.ToList();
         rand = new System.Random();
-        CreateSpawnList();
-        SetSpawnTick();
+        totalSpawned = 0;
+        SetSpawnTick();        
     }
 
     void SetSpawnTick() {        
-        spawnTick = Random.Range(0, 6);
-        spawnCount = 0;
+        spawnTick = Random.Range(1, 4);        
+        spawnCount = 0;        
     }
-	
-    void CreateSpawnList() {
+
+    void ShuffleSpawnList() {
         _obstacles = obstacles.ToList();
-
-        // Save last entry in array as the 'longBlock'
-        // GameObject longBlock = _obstacles.Last();
-        // _obstacles.RemoveAt(_obstacles.Count - 1); // remove 'longBlock' from list
-        // _obstacles = _obstacles.OrderBy(x => rand.Next()).ToList(); // randomize the order of the list        
-        // _obstacles.Add(longBlock); // place 'longBlock' at the end        
+        _obstacles = _obstacles.OrderBy(x => rand.Next()).ToList(); // randomize the order of the list        
     }
 
-	// Update is called once per frame
-	void Update () {
-		if (!hasSpawned) {
-            StartCoroutine(SpawnObstacle());
+    // Update is called once per frame
+    void Update () {       
+        if (!hasSpawned) {
+            if (player.wallClimb) {
+                if (onPlayer) {
+                    var randomWall = spawnDirections[Random.Range(0, spawnDirections.Count)];
+                    StartCoroutine(SpawnObstacle(randomWall));
+                    onPlayer = false;
+                } else {
+                    StartCoroutine(SpawnObstacle(player.currentSide.ToString()));
+                    onPlayer = true;
+                }
+            } else {
+                StartCoroutine(SpawnObstacle("BOTTOM"));                
+            }
         }
 	}
-
-    IEnumerator SpawnObstacle() {
+    IEnumerator SpawnObstacle(string wall) {                
         hasSpawned = true;
-        spawnCount++;
+        totalSpawned++;
+        spawnCount++;        
 
-        // Reset min/max positions
+        // Reset
         minP = -6;
-        maxP = 7; // Random.Range is EXCLUSIVE for max with Integers (stupid unity)
+        maxP = 7; // Random.Range is EXCLUSIVE for max with Integers        
+        
+        if (_obstacles.Count == 0) {
+            ShuffleSpawnList();
+        }
 
-        // TODO: obstacles larger than 1 unit        
         GameObject _obstacle = _obstacles.First(); // select first obstacle
 
-        if (spawnCount == spawnTick) {
-            _obstacles.Remove(_obstacles.First()); // remove it from the list
-            SetSpawnTick();
-        }        
+        if (!player.wallClimb) {            
+            if (spawnCount == spawnTick) {
+                _obstacles.Remove(_obstacles.First()); // remove it from the list
+                SetSpawnTick();
+            }
+        } else {
+            int randomEntry = Random.Range(0, _obstacles.Count);
+            _obstacle = _obstacles[randomEntry]; // select random obstacle
+            _obstacles.Remove(_obstacles[randomEntry]);
+        }               
 
         float xScale = _obstacle.transform.localScale.x;
         minP += (int) xScale/2;
-        maxP -= (int) xScale/2;
+        maxP -= (int) xScale/2;        
 
-        // Spawn obstacles on Player.SIDE
-        switch (player.currentSide) {
-            case PlayerController.SIDE.BOTTOM:
-                spawnRot = Quaternion.Euler(0, 0, 0);
-                xPos = Random.Range(minP, maxP);
-                yPos = -6;
-                break;
-            case PlayerController.SIDE.LEFT:
-                spawnRot = Quaternion.Euler(0, 0, 90f);
-                yPos = Random.Range(minP, maxP);
-                xPos = -6;                
-                break;
-            case PlayerController.SIDE.TOP:
+        // Spawn obstacles on Player.SIDE (Ground) before they wallClimb                
+        switch (wall) {
+            case "TOP":
                 spawnRot = Quaternion.Euler(0, 0, 0);
                 xPos = Random.Range(minP, maxP);
                 yPos = 6;
                 break;
-            case PlayerController.SIDE.RIGHT:
+            case "RIGHT":
                 spawnRot = Quaternion.Euler(0, 0, 90f);
                 yPos = Random.Range(minP, maxP);
-                xPos = 6;                
+                xPos = 6;
+                break;
+            case "BOTTOM":
+                spawnRot = Quaternion.Euler(0, 0, 0);
+                xPos = Random.Range(minP, maxP);
+                yPos = -6;
+                break;
+            case "LEFT":
+                spawnRot = Quaternion.Euler(0, 0, 90f);
+                yPos = Random.Range(minP, maxP);
+                xPos = -6;
                 break;
         }                
 
         // magic number 88 because my wife loves 8s
         Instantiate(_obstacle, new Vector3(xPos, yPos, 88.0f), spawnRot);
+
+        if (totalSpawned % 10 == 0 && spawnTime > 0.25f) {
+            spawnTime -= 0.25f;
+        }
 
         yield return new WaitForSeconds(spawnTime);
 
