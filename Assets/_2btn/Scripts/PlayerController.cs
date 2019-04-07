@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour {
 
     private RotateCamera cam;
 
+    Renderer rend;
+    Vector3 targetRot;
+
+    float angle = 0;
+
     public enum SIDE {
         TOP,
         LEFT,
@@ -30,6 +35,8 @@ public class PlayerController : MonoBehaviour {
         cam = Camera.main.GetComponent<RotateCamera>();
         rb = GetComponent<Rigidbody>();
         currentPos = rb.position;
+        rend = GetComponent<Renderer>();
+        targetRot = rend.bounds.min;
     }
 
     // Update is called once per frame
@@ -40,11 +47,27 @@ public class PlayerController : MonoBehaviour {
     void ControlPlayer () {
         if (Input.GetButtonDown("Left")) {
             FindCurrentSide();
-            MovePlayer(-laneWideness);
+            if (transform.position.x == currentPos.x)
+            {
+                MovePlayer(-laneWideness);
+                angle += 90;
+                StartCoroutine("RotateLeft");
+            }
         }
         if (Input.GetButtonDown("Right")) {
             FindCurrentSide();
-            MovePlayer(laneWideness);
+            //MovePlayer(laneWideness);
+            if (transform.position.x == currentPos.x)
+            {
+                MovePlayer(laneWideness);
+                angle -= 90;
+                StartCoroutine("RotateRight");
+            }
+        }
+
+        if(angle == 360)
+        {
+            angle = 0;
         }
     }
 
@@ -96,13 +119,93 @@ public class PlayerController : MonoBehaviour {
                 currentPos.y += moveDistance;
                 break;
         }
-
-        rb.MovePosition(currentPos);
+        //rb.MovePosition(currentPos);
     }
 
-    void RotatePlayer (float angle) {
-        Quaternion currentRot = rb.rotation;
-        currentRot *= Quaternion.Euler(0, 0, angle);
-        rb.rotation = currentRot;
+    //fix and clean this shit
+    IEnumerator RotateLeft()
+    {
+        switch (currentSide)
+        {
+            case (SIDE.BOTTOM):
+                targetRot = rend.bounds.min;
+                while (transform.position.x > currentPos.x + 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, 1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+            case (SIDE.LEFT):
+                targetRot = rend.bounds.min;
+                targetRot.y += 1;
+                while (transform.position.y < currentPos.y - 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, 1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+            case (SIDE.RIGHT):
+                targetRot = rend.bounds.max;
+                targetRot.y -= 1;
+                while (transform.position.y > currentPos.y + 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, 1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+            case (SIDE.TOP):
+                targetRot = rend.bounds.max;
+                while (transform.position.x < currentPos.x - 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, 1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+        }
+        transform.position = currentPos;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    IEnumerator RotateRight()
+    {
+        switch (currentSide)
+        {
+            case (SIDE.BOTTOM):
+                targetRot = rend.bounds.min;
+                targetRot.x += 1;
+                while (transform.position.x < currentPos.x - 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, -1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+            case (SIDE.LEFT):
+                targetRot = rend.bounds.min;
+                while (transform.position.y > currentPos.y + 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, -1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+            case (SIDE.RIGHT):
+                targetRot = rend.bounds.max;
+                while (transform.position.y < currentPos.y - 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, -1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+            case (SIDE.TOP):
+                targetRot = rend.bounds.max;
+                targetRot.x -= 1;
+                while (transform.position.x > currentPos.x + 0.1)
+                {
+                    transform.RotateAround(targetRot, Vector3.forward, -1000 * Time.deltaTime);
+                    yield return null;
+                }
+                break;
+        }
+        transform.position = currentPos;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
