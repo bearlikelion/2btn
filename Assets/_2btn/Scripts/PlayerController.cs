@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     //Current player position
     private Vector3 currentPos;
 
+    private RotateCamera cam;
+
     public enum SIDE {
         TOP,
         LEFT,
@@ -25,11 +27,12 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        cam = Camera.main.GetComponent<RotateCamera>();
         rb = GetComponent<Rigidbody>();
         currentPos = rb.position;
 
-        rb.freezeRotation = true;
-        rb.useGravity = false;
+        // rb.freezeRotation = true;
+        // rb.useGravity = false;
     }
 
     // Update is called once per frame
@@ -63,6 +66,8 @@ public class PlayerController : MonoBehaviour
         {
             currentSide = right;
         }
+
+        cam.Rotate();
     }
 
     //If player is in specific position check for input and change side
