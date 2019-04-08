@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour {
 
     void ControlPlayer() {
         if (Input.GetButtonDown("Left")) {
+            Debug.Log("Control player: Left");
             FindCurrentSide();
             if (transform.position.x == currentPos.x) {
                 MovePlayer(-laneWideness);
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (Input.GetButtonDown("Right")) {
+            Debug.Log("Control player: Right");
             FindCurrentSide();
             if (transform.position.x == currentPos.x) {
                 MovePlayer(laneWideness);

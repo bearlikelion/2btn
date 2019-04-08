@@ -27,4 +27,10 @@ public class ObstacleApproach : MonoBehaviour {
     private void OnBecameInvisible() {
         Destroy(gameObject);
     }
+
+    private void OnCollisionEnter (Collision collision) {
+        if (collision.gameObject.name == "Start") {
+            Destroy(gameObject);
+        }
+    }
 }
