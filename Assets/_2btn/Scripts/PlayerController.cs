@@ -44,23 +44,25 @@ public class PlayerController : MonoBehaviour {
     }
 
     void ControlPlayer() {
-        if (Input.GetButtonDown("Left")) {
-            Debug.Log("Control player: Left");
-            FindCurrentSide();
-            if (transform.position.x == currentPos.x) {
-                MovePlayer(-laneWideness);
-                StartCoroutine("RotateLeft");
+        if (!_gameManager.GameOver) {
+            if (Input.GetButtonDown("Left")) {
+                Debug.Log("Control player: Left");
+                FindCurrentSide();
+                if (transform.position.x == currentPos.x) {
+                    MovePlayer(-laneWideness);
+                    StartCoroutine("RotateLeft");
+                }
             }
-        }
 
-        if (Input.GetButtonDown("Right")) {
-            Debug.Log("Control player: Right");
-            FindCurrentSide();
-            if (transform.position.x == currentPos.x) {
-                MovePlayer(laneWideness);
-                StartCoroutine("RotateRight");
+            if (Input.GetButtonDown("Right")) {
+                Debug.Log("Control player: Right");
+                FindCurrentSide();
+                if (transform.position.x == currentPos.x) {
+                    MovePlayer(laneWideness);
+                    StartCoroutine("RotateRight");
+                }
             }
-        }
+        }        
     }
 
     //Change side based on input, changes side to left <-> right depening on button pressed
