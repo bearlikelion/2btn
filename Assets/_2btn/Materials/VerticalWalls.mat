@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: VerticalWalls
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 3f387b3c7760d5a488b5596b42425701, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -36,12 +36,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 2800000, guid: 5135c7b45f8d26145aa6061942476059, type: 3}
-        m_Scale: {x: 64, y: 8}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 100, y: 13.4}
+        m_Offset: {x: 0.3, y: 0}
+    - _MKGlowTex:
+        m_Texture: {fileID: 2800000, guid: 5135c7b45f8d26145aa6061942476059, type: 3}
+        m_Scale: {x: 100, y: 13.4}
+        m_Offset: {x: 0, y: 0.3}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 5135c7b45f8d26145aa6061942476059, type: 3}
-        m_Scale: {x: 64, y: 8}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 100, y: 13.4}
+        m_Offset: {x: 0, y: 0.3}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -64,6 +68,8 @@ Material:
     - _GlossyReflections: 1
     - _GridSize: 10
     - _LineSize: 0.15
+    - _MKGlowPower: 2.5
+    - _MKGlowTexStrength: 2
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -81,4 +87,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0.5019608, b: 1, a: 1}
     - _LineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MKGlowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MKGlowTexColor: {r: 0, g: 0.54509807, b: 1, a: 1}
     - _SelectedColor: {r: 1, g: 0, b: 0, a: 1}
