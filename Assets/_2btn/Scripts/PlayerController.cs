@@ -9,62 +9,62 @@ public class PlayerController : MonoBehaviour {
         LEFT,
         RIGHT,
         BOTTOM
-    };
+        };
 
-    //Side the player is currently at
-    public SIDE currentSide = SIDE.BOTTOM;
+        //Side the player is currently at
+        public SIDE currentSide = SIDE.BOTTOM;
 
-    private CameraController cam;
-    private Renderer rend;
-    private Rigidbody rb;
+        private CameraController cam;
+        private Renderer rend;
+        private Rigidbody rb;
 
-    private Vector3 currentPos; //Current player position
-    private Vector3 RotationEdge; //Edge cube will rotate around.
+        private Vector3 currentPos; //Current player position
+        private Vector3 RotationEdge; //Edge cube will rotate around.
 
-    private float rotationSpeed = 1000;
-    private float laneWideness = 1; //Wideness of the lanes
-    private float angle = 0;
+        private float rotationSpeed = 1000;
+        private float laneWideness = 1; //Wideness of the lanes
+        private float angle = 0;
 
-    public bool wallClimb = false;
+        public bool wallClimb = false;
 
-    void Start () {
-        cam = Camera.main.GetComponent<CameraController> ();
-        rend = GetComponent<Renderer> ();
-        rb = GetComponent<Rigidbody> ();
+        void Start() {
+        cam = Camera.main.GetComponent<CameraController>();
+        rend = GetComponent<Renderer>();
+        rb = GetComponent<Rigidbody>();
 
         RotationEdge = rend.bounds.min;
         currentPos = rb.position;
     }
 
     // Update is called once per frame
-    void Update () {
-        ControlPlayer ();
+    void Update() {
+        ControlPlayer();
     }
 
-    void ControlPlayer () {
-        if (Input.GetButtonDown ("Left")) {
-            FindCurrentSide ();
+    void ControlPlayer() {
+        if (Input.GetButtonDown("Left")) {
+            FindCurrentSide();
             if (transform.position.x == currentPos.x) {
-                MovePlayer (-laneWideness);
-                StartCoroutine ("RotateLeft");
+                MovePlayer(-laneWideness);
+                StartCoroutine("RotateLeft");
             }
         }
 
-        if (Input.GetButtonDown ("Right")) {
-            FindCurrentSide ();
+        if (Input.GetButtonDown("Right")) {
+            FindCurrentSide();
             if (transform.position.x == currentPos.x) {
-                MovePlayer (laneWideness);
-                StartCoroutine ("RotateRight");
+                MovePlayer(laneWideness);
+                StartCoroutine("RotateRight");
             }
         }
     }
 
     //Change side based on input, changes side to left <-> right depening on button pressed
-    void ChangeSide (SIDE left, SIDE right) {
-        if (Input.GetButtonDown ("Left")) {
+    void ChangeSide(SIDE left, SIDE right) {
+        if (Input.GetButtonDown("Left")) {
             currentSide = left;
         }
-        if (Input.GetButtonDown ("Right")) {
+        if (Input.GetButtonDown("Right")) {
             currentSide = right;
         }
 
@@ -74,27 +74,27 @@ public class PlayerController : MonoBehaviour {
             wallClimb = true;
         }
 
-        cam.Rotate ();
+        cam.Rotate();
     }
 
     //If player is in specific position check for input and change side.
-    void FindCurrentSide () {
+    void FindCurrentSide() {
         if (currentPos.x == 6 && currentPos.y == -6) {
-            ChangeSide (SIDE.BOTTOM, SIDE.RIGHT);
+            ChangeSide(SIDE.BOTTOM, SIDE.RIGHT);
         }
         if (currentPos.x == -6 && currentPos.y == -6) {
-            ChangeSide (SIDE.LEFT, SIDE.BOTTOM);
+            ChangeSide(SIDE.LEFT, SIDE.BOTTOM);
         }
         if (currentPos.x == 6 && currentPos.y == 6) {
-            ChangeSide (SIDE.RIGHT, SIDE.TOP);
+            ChangeSide(SIDE.RIGHT, SIDE.TOP);
         }
         if (currentPos.x == -6 && currentPos.y == 6) {
-            ChangeSide (SIDE.TOP, SIDE.LEFT);
+            ChangeSide(SIDE.TOP, SIDE.LEFT);
         }
     }
 
     //Move player based on side
-    void MovePlayer (float moveDistance) {
+    void MovePlayer(float moveDistance) {
 
         //Reset when full angle.
         if (angle == 360 || angle == -360) { angle = 0; }
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     //fix and clean this shit
-    IEnumerator RotateLeft () {
+    IEnumerator RotateLeft() {
         //Set angle of rotation
         angle += 90;
 
@@ -140,17 +140,17 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Rotate cube.
-        while (DefineDirection ()) {
-            transform.RotateAround (RotationEdge, Vector3.forward, rotationSpeed * Time.deltaTime);
+        while (DefineDirection()) {
+            transform.RotateAround(RotationEdge, Vector3.forward, rotationSpeed * Time.deltaTime);
             yield return null;
         }
 
         //Set final position and rotation.
         transform.position = currentPos;
-        transform.rotation = Quaternion.Euler (0, 0, angle);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    IEnumerator RotateRight () {
+    IEnumerator RotateRight() {
         //Set angle of rotation
         angle -= 90;
 
@@ -173,18 +173,18 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Rotate cube.
-        while (DefineDirection ()) {
-            transform.RotateAround (RotationEdge, Vector3.forward, -rotationSpeed * Time.deltaTime);
+        while (DefineDirection()) {
+            transform.RotateAround(RotationEdge, Vector3.forward, -rotationSpeed * Time.deltaTime);
             yield return null;
         }
 
         //Set final position and rotation.
         transform.position = currentPos;
-        transform.rotation = Quaternion.Euler (0, 0, angle);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     //Used for rotation.
-    bool DefineDirection () {
+    bool DefineDirection() {
         if (transform.position.x > currentPos.x + 0.1) {
             return true;
         } else if (transform.position.y < currentPos.y - 0.1) {
@@ -196,5 +196,9 @@ public class PlayerController : MonoBehaviour {
         } else {
             return false;
         }
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        Debug.Log(other.gameObject.tag);
     }
 }
