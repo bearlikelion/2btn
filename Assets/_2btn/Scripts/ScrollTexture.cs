@@ -9,20 +9,31 @@ public class ScrollTexture : MonoBehaviour {
     Renderer rend;
 
     public bool scrollWalls = false;
-    void Start() {
-        rend = GetComponent<Renderer>();
+    public bool rotateEnd = false;
+    void Start () {
+        rend = GetComponent<Renderer> ();
     }
-
-    void Update() {
+    float offset;
+    void Update () {
         //Ground and ceiling
         if (!scrollWalls) {
-            float offset = Time.time * scrollSpeed;
-            rend.material.SetTextureOffset("_MainTex", new Vector2(0, -offset));
+            offset = Time.time * scrollSpeed;
+            rend.material.SetTextureOffset ("_MainTex", new Vector2 (0.3f, -offset));
+            rend.material.SetTextureOffset("_MKGlowTex", new Vector2(0.3f, -offset));
         }
         //Left and right wall
-        else {
-            float offset = Time.time * scrollSpeed;
-            rend.material.SetTextureOffset("_MainTex", new Vector2(offset, 0));
+        else
+        {
+            offset = Time.time * scrollSpeed;
+            rend.material.SetTextureOffset("_MainTex", new Vector2(offset, 0.3f));
+            rend.material.SetTextureOffset("_MKGlowTex", new Vector2(offset, 0.3f));
         }
+        if (rotateEnd)
+        {
+            offset = Time.time * scrollSpeed;
+            rend.material.SetTextureOffset("_MainTex", new Vector2(offset, -offset));
+            rend.material.SetTextureOffset("_MKGlowTex", new Vector2(offset, -offset));
+        }
+
     }
 }
