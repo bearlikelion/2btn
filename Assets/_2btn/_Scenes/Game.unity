@@ -139,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 64977518}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 6, z: 90}
-  m_LocalScale: {x: 15, y: 13, z: 1}
+  m_LocalScale: {x: 15.4, y: 13.4, z: 1}
   m_Children: []
   m_Father: {fileID: 992329890}
   m_RootOrder: 4
@@ -281,7 +281,7 @@ Transform:
   m_GameObject: {fileID: 286858668}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1.2, z: 40}
-  m_LocalScale: {x: 13, y: 1, z: 100}
+  m_LocalScale: {x: 13.4, y: 1, z: 100}
   m_Children: []
   m_Father: {fileID: 992329890}
   m_RootOrder: 1
@@ -393,7 +393,7 @@ Transform:
   m_GameObject: {fileID: 976511675}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -7.2, y: 6, z: 40}
-  m_LocalScale: {x: 1, y: 13, z: 100}
+  m_LocalScale: {x: 1, y: 13.4, z: 100}
   m_Children: []
   m_Father: {fileID: 992329890}
   m_RootOrder: 2
@@ -548,7 +548,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1126683055}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f5798b7fd066e394ea371c74cf0b45c6, type: 3}
@@ -637,7 +637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1232640842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -888,7 +888,7 @@ Transform:
   m_GameObject: {fileID: 1618409266}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 7.2, y: 6, z: 40}
-  m_LocalScale: {x: 1, y: 13, z: 100}
+  m_LocalScale: {x: 1, y: 13.4, z: 100}
   m_Children: []
   m_Father: {fileID: 992329890}
   m_RootOrder: 3
@@ -972,7 +972,7 @@ Transform:
   m_GameObject: {fileID: 1940776434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 13.2, z: 40}
-  m_LocalScale: {x: 13, y: 1, z: 100}
+  m_LocalScale: {x: 13.4, y: 1, z: 100}
   m_Children: []
   m_Father: {fileID: 992329890}
   m_RootOrder: 0
