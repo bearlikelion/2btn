@@ -4,19 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public bool wallClimb = false;
-
-    //Wideness of the lanes
-    public float laneWideness;
-
-    private Rigidbody rb;
-
-    //Current player position
-    private Vector3 currentPos;
-
-    private RotateCamera cam;
-
-    public enum SIDE {
+    public enum SIDE
+    {
         TOP,
         LEFT,
         RIGHT,
@@ -26,10 +15,29 @@ public class PlayerController : MonoBehaviour {
     //Side the player is currently at
     public SIDE currentSide = SIDE.BOTTOM;
 
+    private Rigidbody rb;
+    private Renderer rend;
+
+    //Current player position
+    private Vector3 currentPos;
+
+    //Edge cube will rotate around.
+    private Vector3 RotationEdge;
+
+    private RotateCamera cam;
+
+    //Wideness of the lanes
+    private float laneWideness = 1;
+    private float angle = 0;
+    private float rotationSpeed = 1000;
+    public bool wallClimb = false;
+
     void Start () {
         cam = Camera.main.GetComponent<RotateCamera>();
         rb = GetComponent<Rigidbody>();
         currentPos = rb.position;
+        rend = GetComponent<Renderer>();
+        RotationEdge = rend.bounds.min;
     }
 
     // Update is called once per frame
@@ -40,15 +48,23 @@ public class PlayerController : MonoBehaviour {
     void ControlPlayer () {
         if (Input.GetButtonDown("Left")) {
             FindCurrentSide();
-            MovePlayer(-laneWideness);
+            if (transform.position.x == currentPos.x)
+            {
+                MovePlayer(-laneWideness);
+                StartCoroutine("RotateLeft");
+            }
         }
         if (Input.GetButtonDown("Right")) {
             FindCurrentSide();
-            MovePlayer(laneWideness);
+            if (transform.position.x == currentPos.x)
+            {
+                MovePlayer(laneWideness);
+                StartCoroutine("RotateRight");
+            }
         }
     }
 
-    //Change side based on input, moves left <-> right depengin on button pressed
+    //Change side based on input, changes side to left <-> right depening on button pressed
     void ChangeSide (SIDE left, SIDE right) {
         if (Input.GetButtonDown("Left")) {
             currentSide = left;
@@ -57,6 +73,8 @@ public class PlayerController : MonoBehaviour {
             currentSide = right;
         }
 
+        //Should it be false when player is on the bottom? 
+        //Currently it's always true once player goes on the wall.
         if (!wallClimb) {
             wallClimb = true;
         }
@@ -64,7 +82,7 @@ public class PlayerController : MonoBehaviour {
         cam.Rotate();
     }
 
-    //If player is in specific position check for input and change side
+    //If player is in specific position check for input and change side.
     void FindCurrentSide () {
         if (currentPos.x == 6 && currentPos.y == -6) {
             ChangeSide(SIDE.BOTTOM, SIDE.RIGHT);
@@ -82,6 +100,11 @@ public class PlayerController : MonoBehaviour {
 
     //Move player based on side
     void MovePlayer (float moveDistance) {
+        
+        //Reset when full angle.
+        if (angle == 360 || angle == -360) { angle = 0; }
+
+        //Changes position based on side.
         switch (currentSide) {
             case SIDE.BOTTOM:
                 currentPos.x += moveDistance;
@@ -96,13 +119,103 @@ public class PlayerController : MonoBehaviour {
                 currentPos.y += moveDistance;
                 break;
         }
-
-        rb.MovePosition(currentPos);
     }
 
-    void RotatePlayer (float angle) {
-        Quaternion currentRot = rb.rotation;
-        currentRot *= Quaternion.Euler(0, 0, angle);
-        rb.rotation = currentRot;
+    //fix and clean this shit
+    IEnumerator RotateLeft()
+    {
+        //Set angle of rotation
+        angle += 90;
+
+        //Set rotation edge.
+        switch (currentSide)
+        {
+            case (SIDE.BOTTOM):
+                RotationEdge = rend.bounds.min;
+                break;
+            case (SIDE.LEFT):
+                RotationEdge = rend.bounds.min;
+                RotationEdge.y += 1;
+                break;
+            case (SIDE.RIGHT):
+                RotationEdge = rend.bounds.max;
+                RotationEdge.y -= 1;
+                break;
+            case (SIDE.TOP):
+                RotationEdge = rend.bounds.max;
+                break;
+        }
+
+        //Rotate cube.
+        while (DefineDirection())
+        {
+            transform.RotateAround(RotationEdge, Vector3.forward, rotationSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        //Set final position and rotation.
+        transform.position = currentPos;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    IEnumerator RotateRight()
+    {
+        //Set angle of rotation
+        angle -= 90;
+
+        //Set rotation edge.
+        switch (currentSide)
+        {
+            case (SIDE.BOTTOM):
+                RotationEdge = rend.bounds.min;
+                RotationEdge.x += 1;
+                break;
+            case (SIDE.LEFT):
+                RotationEdge = rend.bounds.min;
+                break;
+            case (SIDE.RIGHT):
+                RotationEdge = rend.bounds.max;
+                break;
+            case (SIDE.TOP):
+                RotationEdge = rend.bounds.max;
+                RotationEdge.x -= 1;
+                break;
+        }
+
+        //Rotate cube.
+        while (DefineDirection())
+        {
+            transform.RotateAround(RotationEdge, Vector3.forward, -rotationSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        //Set final position and rotation.
+        transform.position = currentPos;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    //Used for rotation. 
+    bool DefineDirection()
+    {
+        if(transform.position.x > currentPos.x + 0.1)
+        {
+            return true;
+        }
+        else if(transform.position.y < currentPos.y - 0.1)
+        {
+            return true;
+        }
+        else if(transform.position.y > currentPos.y + 0.1)
+        {
+            return true;
+        }
+        else if(transform.position.x < currentPos.x - 0.1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
