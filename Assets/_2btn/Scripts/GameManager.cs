@@ -9,16 +9,7 @@ public class GameManager : MonoBehaviour {
     private bool gameOver = false;
 
     [SerializeField]
-    private GameObject gameOverScreen;
-
-    private PlayerController playerController;
-    
-    private Rigidbody playerRb;
-    private GameObject canvas;
-    private GameObject player;
-    private GameObject cam;    
-
-    private Vector3 playerStartPosition;
+    private GameObject gameOverScreen;    
 
     public bool GameOver {
         get { return gameOver; }
@@ -26,21 +17,9 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {        
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerController = player.GetComponent<PlayerController>();
-        playerRb = player.GetComponent<Rigidbody>();        
-
-        canvas = GameObject.Find("UICanvas");
-        cam = Camera.main.gameObject;
-
-        playerStartPosition = player.transform.position;        
-        
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
-
-        Debug.Log(playerRb.velocity);
-        Debug.Log(playerRb.angularVelocity);
     }
 
     // Update is called once per frame
