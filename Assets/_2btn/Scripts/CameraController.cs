@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     private PlayerController player;
+    private GameManager _gameManager;
 
     private float zPos;
 
@@ -25,6 +26,7 @@ public class CameraController : MonoBehaviour {
         dirLight = GameObject.Find("Directional Light");
         lightRotation = Quaternion.Euler(90, 0, 0);
 
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
@@ -34,14 +36,18 @@ public class CameraController : MonoBehaviour {
     }
 
     void LateUpdate() {
-        // if RotateCamera modifies camPosition Lerp to new position
-        if (camPosition != cam.transform.position) {
-            cam.transform.position = Vector3.Lerp(cam.transform.position, camPosition, transitionTime * Time.deltaTime);
-            cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, camRotation, transitionTime * Time.deltaTime);
-        }
+        if (_gameManager.GameOver) {
+            cam.transform.LookAt(player.transform);
+        } else {
+            // if RotateCamera modifies camPosition Lerp to new position
+            if (camPosition != cam.transform.position) {
+                cam.transform.position = Vector3.Lerp(cam.transform.position, camPosition, transitionTime * Time.deltaTime);
+                cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, camRotation, transitionTime * Time.deltaTime);
+            }
 
-        if (lightRotation != dirLight.transform.rotation) {
-            dirLight.transform.rotation = lightRotation;
+            if (lightRotation != dirLight.transform.rotation) {
+                dirLight.transform.rotation = lightRotation;
+            }
         }
     }
 

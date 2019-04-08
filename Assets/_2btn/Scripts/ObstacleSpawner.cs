@@ -32,7 +32,7 @@ public class ObstacleSpawner : MonoBehaviour {
     // Use this for initialization
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        _gameManager = GameObject.Find("GameManger").GetComponent<GameManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _obstacles = obstacles.ToList();
         rand = new System.Random();
         totalSpawned = 0;

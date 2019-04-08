@@ -9,25 +9,27 @@ public class PlayerController : MonoBehaviour {
         LEFT,
         RIGHT,
         BOTTOM
-        };
+    };
 
-        //Side the player is currently at
-        public SIDE currentSide = SIDE.BOTTOM;
+    //Side the player is currently at
+    public SIDE currentSide = SIDE.BOTTOM;
 
-        private CameraController cam;
-        private Renderer rend;
-        private Rigidbody rb;
+    private GameManager _gameManager;
+    private CameraController cam;
+    private Renderer rend;
+    private Rigidbody rb;
 
-        private Vector3 currentPos; //Current player position
-        private Vector3 RotationEdge; //Edge cube will rotate around.
+    private Vector3 currentPos; //Current player position
+    private Vector3 RotationEdge; //Edge cube will rotate around.
 
-        private float rotationSpeed = 1000;
-        private float laneWideness = 1; //Wideness of the lanes
-        private float angle = 0;
+    private float rotationSpeed = 1000;
+    private float laneWideness = 1; //Wideness of the lanes
+    private float angle = 0;
 
-        public bool wallClimb = false;
+    public bool wallClimb = false;
 
-        void Start() {
+    void Start() {
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         cam = Camera.main.GetComponent<CameraController>();
         rend = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody>();
@@ -199,6 +201,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision other) {
-        Debug.Log(other.gameObject.tag);
+        if (other.gameObject.tag == "Obstacle" && !_gameManager.GameOver) {
+            _gameManager.EndGame();
+        }
     }
 }
