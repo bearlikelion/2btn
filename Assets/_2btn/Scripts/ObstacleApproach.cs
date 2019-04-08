@@ -10,21 +10,21 @@ public class ObstacleApproach : MonoBehaviour {
     private Rigidbody rb;
 
     // Use this for initialization
-    void Start () {
-        rb = GetComponent<Rigidbody> ();
-        Destroy (gameObject, 10f);
+    void Start() {
+        rb = GetComponent<Rigidbody>();
+        Destroy(gameObject, 10f);
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
 
     }
 
-    private void FixedUpdate () {
+    private void FixedUpdate() {
         rb.velocity -= transform.forward * objectSpeed * Time.deltaTime;
     }
 
-    private void OnBecameInvisible () {
-        Destroy (gameObject);
+    private void OnBecameInvisible() {
+        Destroy(gameObject);
     }
 }
