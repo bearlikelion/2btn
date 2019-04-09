@@ -12,16 +12,9 @@ public class ObstacleApproach : MonoBehaviour {
     // Use this for initialization
     void Start() {
         rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
         Destroy(gameObject, 10f);
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
-
-    private void FixedUpdate() {
-        rb.velocity -= transform.forward * objectSpeed * Time.deltaTime;
+        rb.velocity = new Vector3(0, 0, -objectSpeed);
     }
 
     private void OnBecameInvisible() {

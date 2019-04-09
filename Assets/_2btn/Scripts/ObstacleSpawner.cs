@@ -132,11 +132,26 @@ public class ObstacleSpawner : MonoBehaviour {
                 break;
         }
 
+        //Quick fix for obstacles matching the grid
+        if (_obstacle.transform.localScale.x % 2 == 0)
+        {
+            if(wall == "TOP" || wall == "BOTTOM")
+            {
+                if (xPos >= 0)  xPos += 0.5f;
+                else xPos -= 0.5f;
+            }
+            else
+            {
+                if (yPos >= 0) yPos += 0.5f;
+                else yPos -= 0.5f;
+            }
+        }
         // magic z:Pos 88 because my wife loves 8s
         Instantiate(_obstacle, new Vector3(xPos, yPos, 88.0f), spawnRotation);
 
         // Every 10 spawned obstacles reduce spawn time by 0.25s
-        if (totalSpawned % 10 == 0 && spawnTime > 0.25f) {
+        if (totalSpawned % 10 == 0 && spawnTime > 0.25f)
+        {
             spawnTime -= 0.25f;
         }
 
