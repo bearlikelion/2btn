@@ -12,19 +12,28 @@ public class GameManager : MonoBehaviour {
     private GameObject gameOverScreen;
 
     private Camera mainCamera;
-    private float zoomSpeed;
+
+    private float tickDifficulty;
+    private float zoomSpeed;    
 
     public bool GameOver {
         get { return gameOver; }
     }
 
+    public float Difficulty {
+        get { return tickDifficulty;  }
+    }
+
     // Use this for initialization
     void Start() {
         mainCamera = Camera.main;
+        tickDifficulty = 0;
+
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
-        StartCoroutine("CameraZoom");
+
+        // StartCoroutine("CameraZoom");
     }
 
     // Update is called once per frame
@@ -45,6 +54,17 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 0.5f; // Slowdown time to half        
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // smooth slow motion
         Debug.Log("Game Over!");
+    }
+
+    // Increase difficulty
+    public void Tick() {
+        float difficultyIncrease = 1.0f;
+
+        tickDifficulty += difficultyIncrease;
+        ScrollTexture[] walls = FindObjectsOfType(typeof(ScrollTexture)) as ScrollTexture[];
+        foreach (ScrollTexture wall in walls) {
+            wall.scrollSpeed += difficultyIncrease;
+        }
     }
 
     IEnumerator CameraZoom()
