@@ -9,7 +9,11 @@ public class GameManager : MonoBehaviour {
     private bool gameOver = false;
 
     [SerializeField]
-    private GameObject gameOverScreen;    
+    private GameObject gameOverScreen;
+
+    public Camera mainCamera;
+
+    public float zoomSpeed;
 
     public bool GameOver {
         get { return gameOver; }
@@ -20,6 +24,7 @@ public class GameManager : MonoBehaviour {
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
+        StartCoroutine("CameraZoom");
     }
 
     // Update is called once per frame
@@ -39,5 +44,16 @@ public class GameManager : MonoBehaviour {
 
         Time.timeScale = 0.5f; // Slowdown time to half        
         Debug.Log("Game Over!");
+    }
+
+    IEnumerator CameraZoom()
+    {
+        while(mainCamera.fieldOfView > 60f)
+        {
+            zoomSpeed -= Time.deltaTime * 0.9f;
+            mainCamera.fieldOfView -= Time.deltaTime * zoomSpeed;
+            yield return null;
+        }
+        mainCamera.fieldOfView = 60f;
     }
 }

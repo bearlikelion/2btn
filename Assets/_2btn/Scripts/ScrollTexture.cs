@@ -15,10 +15,27 @@ public class ScrollTexture : MonoBehaviour {
 
     private float offset;
 
+    float tempSpeed = 0f;
+
+    float targetTime = 2.0f;
+
     void Start () {
         rend = GetComponent<Renderer> ();
+        tempSpeed = scrollSpeed;
+        scrollSpeed = 0.1f;
     }
     void Update () {
+
+        //Simple timer to start scrolling after 2 seconds.
+        if (targetTime > 0)
+        {
+            targetTime -= Time.deltaTime;
+
+            if (targetTime <= 0.0f)
+            {
+                timerEnded();
+            }
+        }
 
         offset += Time.deltaTime * scrollSpeed;
 
@@ -40,5 +57,10 @@ public class ScrollTexture : MonoBehaviour {
             rend.material.SetTextureOffset("_MKGlowTex", new Vector2(offset, -offset));
         }
 
+    }
+
+    void timerEnded()
+    {
+        scrollSpeed = tempSpeed;
     }
 }
