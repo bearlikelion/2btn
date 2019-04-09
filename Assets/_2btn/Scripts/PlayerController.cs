@@ -74,8 +74,6 @@ public class PlayerController : MonoBehaviour {
             currentSide = right;
         }
 
-        //Should it be false when player is on the bottom?
-        //Currently it's always true once player goes on the wall.
         if (!wallClimb) {
             wallClimb = true;
         }
