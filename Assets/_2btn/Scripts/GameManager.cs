@@ -11,16 +11,16 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameObject gameOverScreen;
 
-    public Camera mainCamera;
-
-    public float zoomSpeed;
+    private Camera mainCamera;
+    private float zoomSpeed;
 
     public bool GameOver {
         get { return gameOver; }
     }
 
     // Use this for initialization
-    void Start() {        
+    void Start() {
+        mainCamera = Camera.main;
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour {
         gameOverScreen.SetActive(true);
 
         Time.timeScale = 0.5f; // Slowdown time to half        
+        Time.fixedDeltaTime = 0.02f * Time.timeScale; // smooth slow motion
         Debug.Log("Game Over!");
     }
 
@@ -50,8 +51,8 @@ public class GameManager : MonoBehaviour {
     {
         while(mainCamera.fieldOfView > 60f)
         {
-            zoomSpeed -= Time.deltaTime * 0.9f;
-            mainCamera.fieldOfView -= Time.deltaTime * zoomSpeed;
+            zoomSpeed -= Time.deltaTime * 1.0f;
+            mainCamera.fieldOfView += Time.deltaTime * zoomSpeed;
             yield return null;
         }
         mainCamera.fieldOfView = 60f;

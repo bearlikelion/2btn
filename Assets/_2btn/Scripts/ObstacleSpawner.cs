@@ -11,7 +11,7 @@ public class ObstacleSpawner : MonoBehaviour {
     [SerializeField]
     private GameObject[] obstacles;
 
-    private int minP, maxP, spawnTick, spawnCount, totalSpawned;
+    private int minPosition, maxPosition, spawnTick, spawnCount, totalSpawned;
     private bool hasSpawned = false, onPlayer = false;
     private float xPos, yPos;
 
@@ -84,8 +84,8 @@ public class ObstacleSpawner : MonoBehaviour {
         spawnCount++;
 
         // Reset
-        minP = -6;
-        maxP = 7; // Random.Range is EXCLUSIVE for max with Integers
+        minPosition = -6;
+        maxPosition = 7; // Random.Range is EXCLUSIVE for max with Integers
 
         if (_obstacles.Count == 0) {
             ShuffleSpawnList();
@@ -105,43 +105,39 @@ public class ObstacleSpawner : MonoBehaviour {
         }
 
         float xScale = _obstacle.transform.localScale.x;
-        minP += (int)xScale / 2;
-        maxP -= (int)xScale / 2;
+        minPosition += (int)xScale / 2;
+        maxPosition -= (int)xScale / 2;
 
         // Spawn obstacles on Player.SIDE (Ground) before they wallClimb
         switch (wall) {
             case "TOP":
                 spawnRotation = Quaternion.Euler(0, 0, 0);
-                xPos = Random.Range(minP, maxP);
+                xPos = Random.Range(minPosition, maxPosition);
                 yPos = 6;
                 break;
             case "RIGHT":
                 spawnRotation = Quaternion.Euler(0, 0, 90f);
-                yPos = Random.Range(minP, maxP);
+                yPos = Random.Range(minPosition, maxPosition);
                 xPos = 6;
                 break;
             case "BOTTOM":
                 spawnRotation = Quaternion.Euler(0, 0, 0);
-                xPos = Random.Range(minP, maxP);
+                xPos = Random.Range(minPosition, maxPosition);
                 yPos = -6;
                 break;
             case "LEFT":
                 spawnRotation = Quaternion.Euler(0, 0, 90f);
-                yPos = Random.Range(minP, maxP);
+                yPos = Random.Range(minPosition, maxPosition);
                 xPos = -6;
                 break;
         }
 
         //Quick fix for obstacles matching the grid
-        if (_obstacle.transform.localScale.x % 2 == 0)
-        {
-            if(wall == "TOP" || wall == "BOTTOM")
-            {
+        if (_obstacle.transform.localScale.x % 2 == 0) {
+            if (wall == "TOP" || wall == "BOTTOM") {
                 if (xPos >= 0)  xPos += 0.5f;
                 else xPos -= 0.5f;
-            }
-            else
-            {
+            } else {
                 if (yPos >= 0) yPos += 0.5f;
                 else yPos -= 0.5f;
             }
@@ -150,8 +146,7 @@ public class ObstacleSpawner : MonoBehaviour {
         Instantiate(_obstacle, new Vector3(xPos, yPos, 88.0f), spawnRotation);
 
         // Every 10 spawned obstacles reduce spawn time by 0.25s
-        if (totalSpawned % 10 == 0 && spawnTime > 0.25f)
-        {
+        if (totalSpawned % 10 == 0 && spawnTime > 0.25f) {
             spawnTime -= 0.25f;
         }
 
