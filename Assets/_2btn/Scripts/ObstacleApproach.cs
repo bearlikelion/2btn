@@ -9,16 +9,17 @@ public class ObstacleApproach : MonoBehaviour {
 
     private Rigidbody rb;
 
+    private GameManager _gameManager;
+
     // Use this for initialization
     void Start() {
-        rb = GetComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
-        Destroy(gameObject, 10f);
-        rb.velocity = new Vector3(0, 0, -objectSpeed);
-    }
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-    private void OnBecameInvisible() {
-        Destroy(gameObject);
+        objectSpeed += _gameManager.Difficulty;
+
+        rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;        
+        rb.velocity = new Vector3(0, 0, -objectSpeed);
     }
 
     private void OnCollisionEnter (Collision collision) {
