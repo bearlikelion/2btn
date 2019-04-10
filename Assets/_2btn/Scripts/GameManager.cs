@@ -125,7 +125,9 @@ public class GameManager : MonoBehaviour {
             tip.SetActive(false);
         }
 
-        highScores.Submit(playerGuid.Guid, obstaclesAvoided, CalculateTimeAlive()); // Submit score to leaderboard
+        if (obstaclesAvoided > 0) {
+            highScores.Submit(playerGuid.Guid, obstaclesAvoided, CalculateTimeAlive()); // Submit score to leaderboard
+        }
 
         Time.timeScale = 0.5f; // Slowdown time to half
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // smooth slow motion

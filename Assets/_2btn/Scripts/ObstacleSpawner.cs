@@ -40,13 +40,11 @@ public class ObstacleSpawner : MonoBehaviour {
     void Update() {
         if (!hasSpawned && !_gameManager.GameOver) {
             if (player.wallClimb) {
-                if (onPlayer) {
+                if (spawnTime > 0.5) {
+                    StartCoroutine(SpawnObstacle(player.currentSide.ToString()));
+                } else {
                     string randomWall = SelectRandomWall();
                     StartCoroutine(SpawnObstacle(randomWall));
-                    onPlayer = false;
-                } else {
-                    StartCoroutine(SpawnObstacle(player.currentSide.ToString()));
-                    onPlayer = true;
                 }
             } else {
                 StartCoroutine(SpawnObstacle("BOTTOM"));
@@ -59,9 +57,9 @@ public class ObstacleSpawner : MonoBehaviour {
         var randomIndex = Random.Range(0, spawnDirections.Count);
 
         randomWall = spawnDirections[randomIndex];
-        if (spawnDirections[randomIndex] == player.currentSide.ToString()) {
-            randomWall = SelectRandomWall(); // Recusive if random == currentSide
-        }
+        // if (spawnDirections[randomIndex] == player.currentSide.ToString()) {
+           // randomWall = SelectRandomWall(); // Recusive if random == currentSide
+        // }
         return randomWall;
     }
 
@@ -124,8 +122,10 @@ public class ObstacleSpawner : MonoBehaviour {
         // Every 5 spawned obstacles increased diffculty
         if (totalSpawned % 5 == 0) {
             _gameManager.Tick();
-            if (spawnTime > 0.25f) {
-                spawnTime -= 0.25f;
+            if (spawnTime > 1) {
+                spawnTime -= 0.125f;
+            } else if (spawnTime > 0.3f && spawnTime <= 1) {
+                spawnTime -= 0.05f;
             }
         }
 
