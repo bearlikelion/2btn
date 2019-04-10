@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
             gameOverScreen.SetActive(false);
         }
         StartCoroutine("CameraZoom");
+        Time.timeScale = 1f;
     }
 
     // Update is called once per frame
