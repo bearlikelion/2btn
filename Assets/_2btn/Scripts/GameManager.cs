@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour {
     void Update() {
         if (Input.GetKeyDown(KeyCode.R)) {
             RestartGame();
-        }        
+        }
+        
+        if(Input.GetButtonDown(KeyCode.Q))
     }
 
     public void RestartGame() {        
