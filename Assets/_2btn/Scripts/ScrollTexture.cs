@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class ScrollTexture : MonoBehaviour {
 
-    // Scroll main texture based on time
-    public float scrollSpeed = 1f;
-    Renderer rend;
+    public float scrollSpeed = 10.0f;
 
     [SerializeField]
     private bool scrollWalls = false;
@@ -14,15 +12,15 @@ public class ScrollTexture : MonoBehaviour {
     private bool rotateEnd = false;
 
     private float offset;
+    private float tempSpeed = 0f;
+    private float targetTime = 0f;
 
-    float tempSpeed = 0f;
+    private GameManager _gameManager;
+    private Renderer rend;
 
-    float targetTime = 2.0f;
-
-    void Start () {
+    void Start () {    
         rend = GetComponent<Renderer> ();
-        tempSpeed = scrollSpeed;
-        scrollSpeed = 0.1f;
+        tempSpeed = scrollSpeed;        
     }
     void Update () {
 

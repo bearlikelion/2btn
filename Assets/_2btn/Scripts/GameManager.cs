@@ -11,20 +11,29 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameObject gameOverScreen;
 
-    public Camera mainCamera;
+    private Camera mainCamera;
 
-    public float zoomSpeed;
+    private float tickDifficulty;
+    private float zoomSpeed;    
 
     public bool GameOver {
         get { return gameOver; }
     }
 
+    public float Difficulty {
+        get { return tickDifficulty;  }
+    }
+
     // Use this for initialization
-    void Start() {        
+    void Start() {
+        mainCamera = Camera.main;
+        tickDifficulty = 0;
+
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
-        StartCoroutine("CameraZoom");
+
+        // StartCoroutine("CameraZoom");
     }
 
     // Update is called once per frame
@@ -43,15 +52,27 @@ public class GameManager : MonoBehaviour {
         gameOverScreen.SetActive(true);
 
         Time.timeScale = 0.5f; // Slowdown time to half        
+        Time.fixedDeltaTime = 0.02f * Time.timeScale; // smooth slow motion
         Debug.Log("Game Over!");
+    }
+
+    // Increase difficulty
+    public void Tick() {
+        float difficultyIncrease = 1.0f;
+
+        tickDifficulty += difficultyIncrease;
+        ScrollTexture[] walls = FindObjectsOfType(typeof(ScrollTexture)) as ScrollTexture[];
+        foreach (ScrollTexture wall in walls) {
+            wall.scrollSpeed += difficultyIncrease;
+        }
     }
 
     IEnumerator CameraZoom()
     {
         while(mainCamera.fieldOfView > 60f)
         {
-            zoomSpeed -= Time.deltaTime * 0.9f;
-            mainCamera.fieldOfView -= Time.deltaTime * zoomSpeed;
+            zoomSpeed -= Time.deltaTime * 1.0f;
+            mainCamera.fieldOfView += Time.deltaTime * zoomSpeed;
             yield return null;
         }
         mainCamera.fieldOfView = 60f;
