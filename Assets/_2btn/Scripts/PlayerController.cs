@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 
     void ControlPlayer() {
         if (!_gameManager.GameOver) {
-            if (Input.GetButtonDown("Left")) {                
+            if (Input.GetButtonDown("Left")) {
                 FindCurrentSide();
                 if (transform.position.x == currentPos.x) {
                     MovePlayer(-laneWideness);
@@ -53,14 +53,22 @@ public class PlayerController : MonoBehaviour {
                 }
             }
 
-            if (Input.GetButtonDown("Right")) {                
+            if (Input.GetButtonDown("Right")) {
                 FindCurrentSide();
                 if (transform.position.x == currentPos.x) {
                     MovePlayer(laneWideness);
                     StartCoroutine("RotateRight");
                 }
             }
-        }        
+        } else {
+            if (Input.GetButtonDown("Left")) {
+                _gameManager.RestartGame();
+            }
+
+            if (Input.GetButtonDown("Right")) {
+                _gameManager.ViewHighScores();
+            }
+        }
     }
 
     //Change side based on input, changes side to left <-> right depening on button pressed

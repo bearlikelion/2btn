@@ -63,6 +63,10 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void ViewHighScores() {
+        SceneManager.LoadScene("HighScores");
+    }
+
     public void EndGame() {
         gameOver = true;
         endTime = Time.time;
@@ -102,9 +106,10 @@ public class GameManager : MonoBehaviour {
         float difficultyIncrease = 1.0f;
 
         tickDifficulty += difficultyIncrease;
+
         ScrollTexture[] walls = FindObjectsOfType(typeof(ScrollTexture)) as ScrollTexture[];
         foreach (ScrollTexture wall in walls) {
-            if (wall.gameObject.name != "End" || wall.gameObject.name != "Start") {
+            if (wall.gameObject.name != "End") {
                 wall.scrollSpeed += difficultyIncrease;
             }
         }
