@@ -11,10 +11,12 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameObject gameOverScreen;
 
+    [SerializeField]
+    private float zoomSpeed;
+
     private Camera mainCamera;
 
     private float tickDifficulty;
-    private float zoomSpeed;    
 
     public bool GameOver {
         get { return gameOver; }
@@ -32,26 +34,19 @@ public class GameManager : MonoBehaviour {
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
-
-        // StartCoroutine("CameraZoom");
+        StartCoroutine("CameraZoom");
+        Time.timeScale = 1f;
     }
 
-    // Update is called once per frame
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.R)) {
-            RestartGame();
-        }        
-    }
-
-    public void RestartGame() {        
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
+    public void RestartGame() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void EndGame() {
         gameOver = true;
         gameOverScreen.SetActive(true);
 
-        Time.timeScale = 0.5f; // Slowdown time to half        
+        Time.timeScale = 0.5f; // Slowdown time to half
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // smooth slow motion
         Debug.Log("Game Over!");
     }
@@ -72,7 +67,7 @@ public class GameManager : MonoBehaviour {
         while(mainCamera.fieldOfView > 60f)
         {
             zoomSpeed -= Time.deltaTime * 1.0f;
-            mainCamera.fieldOfView += Time.deltaTime * zoomSpeed;
+            mainCamera.fieldOfView -= Time.deltaTime * zoomSpeed;
             yield return null;
         }
         mainCamera.fieldOfView = 60f;
