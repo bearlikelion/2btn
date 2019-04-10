@@ -11,14 +11,17 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameObject gameOverScreen;
 
+    [SerializeField]
+    private float zoomSpeed;
+
     private Camera mainCamera;
+    private PlayerController player;
     private HighScores highScores;
     private PlayerGUID playerGuid;
 
     private int obstaclesAvoided;
     private float startTime, endTime;
     private float tickDifficulty;
-    private float zoomSpeed;
 
     public bool GameOver {
         get { return gameOver; }
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         playerGuid = GameObject.Find("PlayerGUID").GetComponent<PlayerGUID>();
         highScores = GetComponent<HighScores>();
         mainCamera = Camera.main;
@@ -46,16 +50,13 @@ public class GameManager : MonoBehaviour {
         tickDifficulty = 0;
         endTime = 0;
 
+        Time.timeScale = 1f;
+
         // if Game not over but GameOver screen is showing - hide it
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
-
         StartCoroutine("CameraZoom");
-    }
-
-    // Update is called once per frame
-    void Update() {
     }
 
     public void RestartGame() {
@@ -66,6 +67,13 @@ public class GameManager : MonoBehaviour {
         gameOver = true;
         endTime = Time.time;
         gameOverScreen.SetActive(true);
+
+        GameObject tip = gameOverScreen.transform.Find("Tip").gameObject;
+        if (!player.wallClimb) {
+            tip.SetActive(true);
+        } else {
+            tip.SetActive(false);
+        }
 
         highScores.Submit(playerGuid.Guid, obstaclesAvoided, CalculateTimeAlive()); // Submit score to leaderboard
 
@@ -82,7 +90,7 @@ public class GameManager : MonoBehaviour {
             timeAlive = Time.time - startTime;
         }
 
-        return timeAlive;
+        return Mathf.Round(timeAlive);
     }
 
     public void ObstacleAvoided() {
@@ -107,7 +115,7 @@ public class GameManager : MonoBehaviour {
         while(mainCamera.fieldOfView > 60f)
         {
             zoomSpeed -= Time.deltaTime * 1.0f;
-            mainCamera.fieldOfView += Time.deltaTime * zoomSpeed;
+            mainCamera.fieldOfView -= Time.deltaTime * zoomSpeed;
             yield return null;
         }
         mainCamera.fieldOfView = 60f;

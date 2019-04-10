@@ -13,14 +13,15 @@ public class ScrollTexture : MonoBehaviour {
 
     private float offset;
     private float tempSpeed = 0f;
-    private float targetTime = 0f;
+    private float targetTime = 2f;
 
     private GameManager _gameManager;
     private Renderer rend;
 
     void Start () {    
         rend = GetComponent<Renderer> ();
-        tempSpeed = scrollSpeed;        
+        tempSpeed = scrollSpeed;
+        scrollSpeed = 0.1f;
     }
     void Update () {
 
