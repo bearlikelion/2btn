@@ -11,10 +11,12 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameObject gameOverScreen;
 
+    [SerializeField]
+    private float zoomSpeed;
+
     private Camera mainCamera;
 
     private float tickDifficulty;
-    private float zoomSpeed;
 
     public bool GameOver {
         get { return gameOver; }
@@ -34,15 +36,6 @@ public class GameManager : MonoBehaviour {
         }
         StartCoroutine("CameraZoom");
         Time.timeScale = 1f;
-    }
-
-    // Update is called once per frame
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.R)) {
-            RestartGame();
-        }
-
-        if(Input.GetButtonDown(KeyCode.Q))
     }
 
     public void RestartGame() {
@@ -74,7 +67,7 @@ public class GameManager : MonoBehaviour {
         while(mainCamera.fieldOfView > 60f)
         {
             zoomSpeed -= Time.deltaTime * 1.0f;
-            mainCamera.fieldOfView += Time.deltaTime * zoomSpeed;
+            mainCamera.fieldOfView -= Time.deltaTime * zoomSpeed;
             yield return null;
         }
         mainCamera.fieldOfView = 60f;
