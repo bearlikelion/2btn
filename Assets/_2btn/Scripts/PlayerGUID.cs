@@ -31,6 +31,9 @@ public class PlayerGUID : MonoBehaviour {
 
     void GenerateGUID () {
         guid = System.Convert.ToBase64String(System.Guid.NewGuid().ToByteArray()); // Short GUID
+        if (guid.Contains("/")) {
+            guid = guid.Replace("/", "");
+        }
         Debug.Log(guid);
     }
 }

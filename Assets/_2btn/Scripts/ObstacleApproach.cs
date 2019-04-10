@@ -18,12 +18,13 @@ public class ObstacleApproach : MonoBehaviour {
         objectSpeed += _gameManager.Difficulty;
 
         rb = GetComponent<Rigidbody>();
-        rb.interpolation = RigidbodyInterpolation.Interpolate;        
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.velocity = new Vector3(0, 0, -objectSpeed);
     }
 
     private void OnCollisionEnter (Collision collision) {
         if (collision.gameObject.name == "Start") {
+            _gameManager.ObstacleAvoided();
             Destroy(gameObject);
         }
     }
