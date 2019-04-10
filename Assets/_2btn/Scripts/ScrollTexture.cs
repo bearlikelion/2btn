@@ -17,7 +17,7 @@ public class ScrollTexture : MonoBehaviour {
     private GameManager _gameManager;
     private Renderer rend;
 
-    void Start () {    
+    void Start () {
         rend = GetComponent<Renderer> ();
         tempSpeed = scrollSpeed;
         scrollSpeed = 0.1f;

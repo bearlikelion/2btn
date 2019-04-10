@@ -10,7 +10,7 @@ public class ObstacleSpawner : MonoBehaviour {
 
     [SerializeField]
     private GameObject[] obstacles;
-    
+
     private bool hasSpawned = false, onPlayer = false;
     private float xPos, yPos;
     private int totalSpawned;
@@ -19,7 +19,7 @@ public class ObstacleSpawner : MonoBehaviour {
 
     private List<GameObject> _obstacles;
     private GameManager _gameManager;
-    private PlayerController player;    
+    private PlayerController player;
 
     private List<string> spawnDirections = new List<string> {
         "TOP",
@@ -32,7 +32,7 @@ public class ObstacleSpawner : MonoBehaviour {
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        _obstacles = obstacles.ToList();        
+        _obstacles = obstacles.ToList();
         totalSpawned = 0;
     }
 
@@ -40,13 +40,11 @@ public class ObstacleSpawner : MonoBehaviour {
     void Update() {
         if (!hasSpawned && !_gameManager.GameOver) {
             if (player.wallClimb) {
-                if (onPlayer) {
+                if (spawnTime > 0.5) {
+                    StartCoroutine(SpawnObstacle(player.currentSide.ToString()));
+                } else {
                     string randomWall = SelectRandomWall();
                     StartCoroutine(SpawnObstacle(randomWall));
-                    onPlayer = false;
-                } else {
-                    StartCoroutine(SpawnObstacle(player.currentSide.ToString()));
-                    onPlayer = true;
                 }
             } else {
                 StartCoroutine(SpawnObstacle("BOTTOM"));
@@ -59,9 +57,9 @@ public class ObstacleSpawner : MonoBehaviour {
         var randomIndex = Random.Range(0, spawnDirections.Count);
 
         randomWall = spawnDirections[randomIndex];
-        if (spawnDirections[randomIndex] == player.currentSide.ToString()) {
-            randomWall = SelectRandomWall(); // Recusive if random == currentSide
-        }
+        // if (spawnDirections[randomIndex] == player.currentSide.ToString()) {
+           // randomWall = SelectRandomWall(); // Recusive if random == currentSide
+        // }
         return randomWall;
     }
 
@@ -73,16 +71,18 @@ public class ObstacleSpawner : MonoBehaviour {
         int maxPosition = 7; // Random.Range is EXCLUSIVE for max with Integers
 
         int diceRoll = Random.Range(0, 6);
-        GameObject _obstacle = _obstacles[diceRoll]; // select first obstacle
+        GameObject _obstacle; // select first obstacle
 
-        if (diceRoll == 5) {            
-            _obstacle = _obstacles[Random.Range(5, _obstacles.Count)];
+        if (diceRoll > 4) {
+            _obstacle = _obstacles[Random.Range(6, _obstacles.Count)];
+        } else {
+            _obstacle = _obstacles[Random.Range(0, 6)];
         }
 
         float xScale = _obstacle.transform.localScale.x;
         minPosition += (int)xScale / 2;
         maxPosition -= (int)xScale / 2;
-        
+
         switch (wall) {
             case "TOP":
                 spawnRotation = Quaternion.Euler(0, 0, 0);
@@ -122,10 +122,10 @@ public class ObstacleSpawner : MonoBehaviour {
         // Every 5 spawned obstacles increased diffculty
         if (totalSpawned % 5 == 0) {
             _gameManager.Tick();
-            if (spawnTime > 0.5f) {
-                spawnTime -= 0.5f;
-            } else if (spawnTime > 0.15f) {
-                spawnTime -= 0.15f;
+            if (spawnTime > 1) {
+                spawnTime -= 0.125f;
+            } else if (spawnTime > 0.3f && spawnTime <= 1) {
+                spawnTime -= 0.05f;
             }
         }
 

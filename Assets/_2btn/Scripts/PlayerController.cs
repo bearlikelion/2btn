@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
     private float laneWideness = 1; //Wideness of the lanes
     private float angle = 0;
 
-    public bool wallClimb = false;
+    public bool wallClimb = false, waitGameOver = false;
 
     void Start() {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 
     void ControlPlayer() {
         if (!_gameManager.GameOver) {
-            if (Input.GetButtonDown("Left")) {                
+            if (Input.GetButtonDown("Left")) {
                 FindCurrentSide();
                 if (transform.position.x == currentPos.x) {
                     MovePlayer(-laneWideness);
@@ -53,14 +53,26 @@ public class PlayerController : MonoBehaviour {
                 }
             }
 
-            if (Input.GetButtonDown("Right")) {                
+            if (Input.GetButtonDown("Right")) {
                 FindCurrentSide();
                 if (transform.position.x == currentPos.x) {
                     MovePlayer(laneWideness);
                     StartCoroutine("RotateRight");
                 }
             }
-        }        
+        } else {
+            // Wait half second before input to avoid players spam pressing to a new scene
+            StartCoroutine(GameOverDelay());
+            if (waitGameOver) {
+                if (Input.GetButtonDown("Left")) {
+                    _gameManager.RestartGame();
+                }
+
+                if (Input.GetButtonDown("Right")) {
+                    _gameManager.ViewHighScores();
+                }
+            }
+        }
     }
 
     //Change side based on input, changes side to left <-> right depening on button pressed
@@ -116,6 +128,11 @@ public class PlayerController : MonoBehaviour {
                 currentPos.y += moveDistance;
                 break;
         }
+    }
+
+    IEnumerator GameOverDelay() {
+        yield return new WaitForSeconds(0.5f);
+        waitGameOver = true;
     }
 
     //fix and clean this shit

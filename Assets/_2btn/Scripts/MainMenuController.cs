@@ -30,7 +30,7 @@ public class MainMenuController : MonoBehaviour {
 
         MusicSource.clip = MusicClip;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
         if (MenuCube.activeSelf == true)
@@ -95,6 +95,9 @@ public class MainMenuController : MonoBehaviour {
             case (Sides.CREDIT):
                 Credits.SetActive(true);
                 MenuCube.SetActive(false);
+                break;
+            case (Sides.SCOREBOARD):
+                SceneManager.LoadScene("HighScores");
                 break;
         }
 

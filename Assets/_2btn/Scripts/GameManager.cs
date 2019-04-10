@@ -27,7 +27,12 @@ public class GameManager : MonoBehaviour {
     private float zoomSpeed;
 
     private Camera mainCamera;
+    private PlayerController player;
+    private HighScores highScores;
+    private PlayerGUID playerGuid;
 
+    private int obstaclesAvoided;
+    private float startTime, endTime;
     private float tickDifficulty;
 
     private float targetTime = 2f;
@@ -40,11 +45,28 @@ public class GameManager : MonoBehaviour {
         get { return tickDifficulty;  }
     }
 
+    public int ObstaclesAvoided {
+        get { return obstaclesAvoided; }
+    }
+
+    public float TimeAlive {
+        get { return CalculateTimeAlive(); }
+    }
+
     // Use this for initialization
     void Start() {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerGuid = GameObject.Find("PlayerGUID").GetComponent<PlayerGUID>();
+        highScores = GetComponent<HighScores>();
         mainCamera = Camera.main;
+        startTime = Time.time;
+        obstaclesAvoided = 0;
         tickDifficulty = 0;
+        endTime = 0;
 
+        Time.timeScale = 1f;
+
+        // if Game not over but GameOver screen is showing - hide it
         if (!gameOver && gameOverScreen.activeSelf) {
             gameOverScreen.SetActive(false);
         }
@@ -84,16 +106,47 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void ViewHighScores() {
+        SceneManager.LoadScene("HighScores");
+    }
+
     public void EndGame() {
         SoundSource.volume = 1f;
         SoundSource.clip = DeadClip;
         SoundSource.Play();
         gameOver = true;
+        endTime = Time.time;
         gameOverScreen.SetActive(true);
+
+        GameObject tip = gameOverScreen.transform.Find("Tip").gameObject;
+        if (!player.wallClimb) {
+            tip.SetActive(true);
+        } else {
+            tip.SetActive(false);
+        }
+
+        if (obstaclesAvoided > 0) {
+            highScores.Submit(playerGuid.Guid, obstaclesAvoided, CalculateTimeAlive()); // Submit score to leaderboard
+        }
 
         Time.timeScale = 0.5f; // Slowdown time to half
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // smooth slow motion
         Debug.Log("Game Over!");
+    }
+
+    private float CalculateTimeAlive() {
+        float timeAlive = 0;
+        if (endTime > 0) {
+            timeAlive = endTime - startTime;
+        } else {
+            timeAlive = Time.time - startTime;
+        }
+
+        return Mathf.Round(timeAlive);
+    }
+
+    public void ObstacleAvoided() {
+        obstaclesAvoided++;
     }
 
     // Increase difficulty
@@ -101,9 +154,12 @@ public class GameManager : MonoBehaviour {
         float difficultyIncrease = 1.0f;
 
         tickDifficulty += difficultyIncrease;
+
         ScrollTexture[] walls = FindObjectsOfType(typeof(ScrollTexture)) as ScrollTexture[];
         foreach (ScrollTexture wall in walls) {
-            wall.scrollSpeed += difficultyIncrease;
+            if (wall.gameObject.name != "End") {
+                wall.scrollSpeed += difficultyIncrease;
+            }
         }
     }
 
