@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
     private Camera mainCamera;
 
     private float tickDifficulty;
-    private float zoomSpeed;    
+    private float zoomSpeed;
 
     public bool GameOver {
         get { return gameOver; }
@@ -40,18 +40,18 @@ public class GameManager : MonoBehaviour {
     void Update() {
         if (Input.GetKeyDown(KeyCode.R)) {
             RestartGame();
-        }        
+        }
     }
 
-    public void RestartGame() {        
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
+    public void RestartGame() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void EndGame() {
         gameOver = true;
         gameOverScreen.SetActive(true);
 
-        Time.timeScale = 0.5f; // Slowdown time to half        
+        Time.timeScale = 0.5f; // Slowdown time to half
         Time.fixedDeltaTime = 0.02f * Time.timeScale; // smooth slow motion
         Debug.Log("Game Over!");
     }
