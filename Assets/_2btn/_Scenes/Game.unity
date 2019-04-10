@@ -875,7 +875,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOver: 0
   gameOverScreen: {fileID: 709813869}
-  zoomSpeed: 40
+  SoundSource: {fileID: 1453036918}
+  wwwClip: {fileID: 8300000, guid: 9177901603864f74e92120127650d439, type: 3}
+  MusicClip: {fileID: 8300000, guid: bde1069156e5af946b459a577d09b311, type: 3}
+  DeadClip: {fileID: 8300000, guid: 3eb2f16428aa2784a88a5720368574f0, type: 3}
+  zoomSpeed: 35
 --- !u!4 &1099722101
 Transform:
   m_ObjectHideFlags: 0
@@ -1189,7 +1193,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   bloomThreshold:
-    minValue: 1
+    minValue: 1.5
     maxValue: 10
   bloomScattering: 7
   bloomIntensity: 1
@@ -1202,8 +1206,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f5798b7fd066e394ea371c74cf0b45c6, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: a848cf8cc87d66b448876fe4fbac3a32, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1

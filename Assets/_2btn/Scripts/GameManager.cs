@@ -12,6 +12,18 @@ public class GameManager : MonoBehaviour {
     private GameObject gameOverScreen;
 
     [SerializeField]
+    private AudioSource SoundSource;
+
+    [SerializeField]
+    private AudioClip wwwClip;
+
+    [SerializeField]
+    private AudioClip MusicClip;
+
+    [SerializeField]
+    private AudioClip DeadClip;
+
+    [SerializeField]
     private float zoomSpeed;
 
     private Camera mainCamera;
@@ -22,6 +34,8 @@ public class GameManager : MonoBehaviour {
     private int obstaclesAvoided;
     private float startTime, endTime;
     private float tickDifficulty;
+
+    private float targetTime = 2f;
 
     public bool GameOver {
         get { return gameOver; }
@@ -57,6 +71,35 @@ public class GameManager : MonoBehaviour {
             gameOverScreen.SetActive(false);
         }
         StartCoroutine("CameraZoom");
+        Time.timeScale = 1f;
+
+        //play whooosh sound
+        SoundSource.volume = 1f;
+        SoundSource.clip = wwwClip;
+        SoundSource.Play();
+    }
+
+    private void Update()
+    {
+        //Simple timer to start scrolling after 2 seconds.
+        if (targetTime > 0)
+        {
+            targetTime -= Time.deltaTime;
+
+            if (targetTime <= 0.0f)
+            {
+                ScrollTexture[] walls = FindObjectsOfType(typeof(ScrollTexture)) as ScrollTexture[];
+                foreach (ScrollTexture wall in walls)
+                {
+                    wall.TimerEnded();
+                }
+
+                //start music loop
+                SoundSource.volume = 0.5f;
+                SoundSource.clip = MusicClip;
+                SoundSource.Play();
+            }
+        }
     }
 
     public void RestartGame() {
@@ -68,6 +111,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EndGame() {
+        SoundSource.volume = 1f;
+        SoundSource.clip = DeadClip;
+        SoundSource.Play();
         gameOver = true;
         endTime = Time.time;
         gameOverScreen.SetActive(true);
