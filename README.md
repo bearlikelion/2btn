@@ -1,6 +1,6 @@
 # Cube3
 
-![Cube3 Screenshot](./Screenshots/Gameplay.png)
+![Cube3 Screenshot](./Screenshots/Gameplay.PNG)
 
 ## About
 
