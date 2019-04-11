@@ -416,7 +416,7 @@ RectTransform:
   m_Children:
   - {fileID: 2024509459}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1224,7 +1224,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Start game
+  m_Text: Play game
 --- !u!222 &874744088
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1457,7 +1457,7 @@ RectTransform:
   - {fileID: 1845326435}
   - {fileID: 351301040}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2723,13 +2723,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 50
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press  both  buttons  at  the  sime  time  to  make  a  choice
+  m_Text: Press  both  buttons  at  the  same  time  to  select
 --- !u!222 &2052500456
 CanvasRenderer:
   m_ObjectHideFlags: 0

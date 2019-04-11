@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 public class PlayerGUID : MonoBehaviour {
 
@@ -31,9 +32,9 @@ public class PlayerGUID : MonoBehaviour {
 
     void GenerateGUID () {
         guid = System.Convert.ToBase64String(System.Guid.NewGuid().ToByteArray()); // Short GUID
-        if (guid.Contains("/")) {
-            guid = guid.Replace("/", "");
-        }
+        Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+        guid = rgx.Replace(guid, "");
+
         Debug.Log(guid);
     }
 }
