@@ -42,6 +42,22 @@ public class HighScores : MonoBehaviour {
 
     void Start () {
         _playerGUID = GameObject.Find("PlayerGUID").GetComponent<PlayerGUID>();
+
+        if (SceneManager.GetActiveScene().name == "HighScores") {
+            StartCoroutine(LoadScores());            
+        }
+    }
+
+    void Update () {       
+        if (SceneManager.GetActiveScene().name == "HighScores") {
+            if (Input.GetButtonDown("Left")) {
+                SceneManager.LoadScene("Game");
+            }
+
+            if (Input.GetButtonDown("Right")) {
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
     }
 
     public void Submit(string guid, int score, float timeAlive) {
@@ -51,7 +67,7 @@ public class HighScores : MonoBehaviour {
 
     void DisplayScores () {
         Rootobject scores = new Rootobject();
-        scores = JsonUtility.FromJson<Rootobject>(leaderboard);
+        scores = JsonUtility.FromJson<Rootobject>(leaderboard);        
 
         if (scores.dreamlo.leaderboard.entry != null) {
             loading.SetActive(false);
@@ -64,14 +80,20 @@ public class HighScores : MonoBehaviour {
 
             entries = entries.OrderByDescending(x => x.score).ThenByDescending(x => x.seconds).ToList();
 
+            int position = 1;
+
             foreach (Entry player in entries) {
+
                 GameObject childScore = Instantiate(scoreEntry, content.transform);
+                childScore.transform.Find("Number").GetComponent<Text>().text = '#' + position.ToString();
                 childScore.transform.Find("Score").GetComponent<Text>().text = player.score.ToString();
                 childScore.transform.Find("Time").GetComponent<Text>().text = player.seconds.ToString();
 
                 if (player.name == _playerGUID.Guid) {
-                    childScore.GetComponent<Image>().color = new Color32(80, 160, 89, 200); // Highlight current player scores
+                    childScore.GetComponent<Image>().color = new Color32(60, 171, 255, 100); // Highlight current player scores
                 }
+
+                position++;
             }
         } else {
             StartCoroutine(Fake2Scores());
