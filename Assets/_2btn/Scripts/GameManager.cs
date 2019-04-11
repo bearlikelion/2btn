@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1f;
 
         //play whooosh sound
-        SoundSource.volume = 1f;
+        SoundSource.volume = 0.5f;
         SoundSource.clip = wwwClip;
         SoundSource.Play();
     }

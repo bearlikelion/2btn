@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
     private CameraController cam;
     private Renderer rend;
     private Rigidbody rb;
+    private AudioSource moveSound;
 
     private Vector3 currentPos; //Current player position
     private Vector3 RotationEdge; //Edge cube will rotate around.
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour {
         cam = Camera.main.GetComponent<CameraController>();
         rend = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody>();
+        moveSound = GetComponent<AudioSource>();
 
         RotationEdge = rend.bounds.min;
         currentPos = rb.position;
@@ -48,6 +50,7 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetButtonDown("Left")) {
                 FindCurrentSide();
                 if (transform.position.x == currentPos.x) {
+                    moveSound.Play();
                     MovePlayer(-laneWideness);
                     StartCoroutine("RotateLeft");
                 }
@@ -56,6 +59,7 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetButtonDown("Right")) {
                 FindCurrentSide();
                 if (transform.position.x == currentPos.x) {
+                    moveSound.Play();
                     MovePlayer(laneWideness);
                     StartCoroutine("RotateRight");
                 }

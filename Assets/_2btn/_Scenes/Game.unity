@@ -978,7 +978,7 @@ MonoBehaviour:
   gameOver: 0
   gameOverScreen: {fileID: 709813869}
   SoundSource: {fileID: 1453036918}
-  wwwClip: {fileID: 8300000, guid: 9177901603864f74e92120127650d439, type: 3}
+  wwwClip: {fileID: 8300000, guid: 9e1b690a9185f9745883d1707486a688, type: 3}
   MusicClip: {fileID: 8300000, guid: bde1069156e5af946b459a577d09b311, type: 3}
   DeadClip: {fileID: 8300000, guid: 3eb2f16428aa2784a88a5720368574f0, type: 3}
   zoomSpeed: 35
@@ -1673,45 +1673,6 @@ Prefab:
     - target: {fileID: 4663169316338794, guid: 422b340cec3e2e94d82e35072c6be280, type: 2}
       propertyPath: m_RootOrder
       value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 65342317237026778, guid: 422b340cec3e2e94d82e35072c6be280,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 54792438774736112, guid: 422b340cec3e2e94d82e35072c6be280,
-        type: 2}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 54792438774736112, guid: 422b340cec3e2e94d82e35072c6be280,
-        type: 2}
-      propertyPath: m_Constraints
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4663169316338794, guid: 422b340cec3e2e94d82e35072c6be280, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 54792438774736112, guid: 422b340cec3e2e94d82e35072c6be280,
-        type: 2}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 65342317237026778, guid: 422b340cec3e2e94d82e35072c6be280,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 65342317237026778, guid: 422b340cec3e2e94d82e35072c6be280,
-        type: 2}
-      propertyPath: m_Size.y
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 65342317237026778, guid: 422b340cec3e2e94d82e35072c6be280,
-        type: 2}
-      propertyPath: m_Size.z
-      value: 0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 422b340cec3e2e94d82e35072c6be280, type: 2}
