@@ -25,7 +25,7 @@ Developed by:
 * [Mark Arneman](https://arneman.me)
 * [Rensei](https://mobile.twitter.com/Rensei_)
 
-Music By Mister Hippo
+Music By [Mister Hippo](https://m.soundcloud.com/creative-hippo)
 
 Lazer84 font by [Sunrise Digital](https://sunrise-digital.net/font.html)\
 High scores provided by [Dreamlo](http://dreamlo.com/)\
