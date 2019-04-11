@@ -1,5 +1,7 @@
 # Cube3
 
+![Cube3 Screenshot](./Screenshots/Gameplay.png)
+
 ## About
 
 Cube3 (Cube Cubed) is a game created for 8 Bits to Infinity's [Two Button Jam](https://itch.io/jam/2buttonjam).\
