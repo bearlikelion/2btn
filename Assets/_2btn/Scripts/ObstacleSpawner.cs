@@ -40,7 +40,7 @@ public class ObstacleSpawner : MonoBehaviour {
     void Update() {
         if (!hasSpawned && !_gameManager.GameOver) {
             if (player.wallClimb) {
-                if (spawnTime > 0.5) {
+                if (spawnTime > 1) {
                     StartCoroutine(SpawnObstacle(player.currentSide.ToString()));
                 } else {
                     string randomWall = SelectRandomWall();

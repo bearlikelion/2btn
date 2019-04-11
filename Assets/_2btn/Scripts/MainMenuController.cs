@@ -99,6 +99,13 @@ public class MainMenuController : MonoBehaviour {
             case (Sides.SCOREBOARD):
                 SceneManager.LoadScene("HighScores");
                 break;
+            case (Sides.EXIT):
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #else
+                    Application.Quit();
+                #endif
+                break;
         }
 
     }

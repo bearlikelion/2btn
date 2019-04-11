@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -25,6 +26,12 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     private float zoomSpeed;
+
+    [SerializeField]
+    private Text scoreText;
+
+    [SerializeField]
+    private Text timeText;
 
     private Camera mainCamera;
     private PlayerController player;
@@ -100,6 +107,9 @@ public class GameManager : MonoBehaviour {
                 SoundSource.Play();
             }
         }
+
+        float secondsAlive = Mathf.Round(Time.time - startTime);
+        timeText.text = "Time: " + secondsAlive.ToString();
     }
 
     public void RestartGame() {
@@ -147,6 +157,7 @@ public class GameManager : MonoBehaviour {
 
     public void ObstacleAvoided() {
         obstaclesAvoided++;
+        scoreText.text = "Score: " + obstaclesAvoided.ToString();
     }
 
     // Increase difficulty
