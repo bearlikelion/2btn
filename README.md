@@ -2,6 +2,10 @@
 
 ![Cube3 Screenshot](./Screenshots/Gameplay.PNG)
 
+**Play in your browser or download it [here](https://bearlikelion.itch.io/cube3)!**
+
+**[View the high scores](https://arneman.me/cube3/) online!**
+
 ## About
 
 Cube3 (Cube Cubed) is a game created for 8 Bits to Infinity's [Two Button Jam](https://itch.io/jam/2buttonjam).\
