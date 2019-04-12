@@ -13,27 +13,16 @@ public class ScrollTexture : MonoBehaviour {
 
     private float offset;
     private float tempSpeed = 0f;
-    private float targetTime = 0f;
 
     private GameManager _gameManager;
     private Renderer rend;
 
-    void Start () {    
+    void Start () {
         rend = GetComponent<Renderer> ();
-        tempSpeed = scrollSpeed;        
+        tempSpeed = scrollSpeed;
+        scrollSpeed = 0.1f;
     }
     void Update () {
-
-        //Simple timer to start scrolling after 2 seconds.
-        if (targetTime > 0)
-        {
-            targetTime -= Time.deltaTime;
-
-            if (targetTime <= 0.0f)
-            {
-                timerEnded();
-            }
-        }
 
         offset += Time.deltaTime * scrollSpeed;
 
@@ -57,7 +46,7 @@ public class ScrollTexture : MonoBehaviour {
 
     }
 
-    void timerEnded()
+    public void TimerEnded()
     {
         scrollSpeed = tempSpeed;
     }
