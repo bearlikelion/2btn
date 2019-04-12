@@ -38,17 +38,17 @@ public class HighScores : MonoBehaviour {
     private string leaderboard = "";
     private PlayerGUID _playerGUID;
 
-    private static string leaderboardUrl = "http://dreamlo.com/lb/";
+    private static string leaderboardUrl = "https://dreamlo.com/lb/";
 
     void Start () {
         _playerGUID = GameObject.Find("PlayerGUID").GetComponent<PlayerGUID>();
 
         if (SceneManager.GetActiveScene().name == "HighScores") {
-            StartCoroutine(LoadScores());            
+            StartCoroutine(LoadScores());
         }
     }
 
-    void Update () {       
+    void Update () {
         if (SceneManager.GetActiveScene().name == "HighScores") {
             if (Input.GetButtonDown("Left")) {
                 SceneManager.LoadScene("Game");
@@ -67,7 +67,7 @@ public class HighScores : MonoBehaviour {
 
     void DisplayScores () {
         Rootobject scores = new Rootobject();
-        scores = JsonUtility.FromJson<Rootobject>(leaderboard);        
+        scores = JsonUtility.FromJson<Rootobject>(leaderboard);
 
         if (scores.dreamlo.leaderboard.entry != null) {
             loading.SetActive(false);
