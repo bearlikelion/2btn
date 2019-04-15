@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour {
             }
         }
 
+        // TODO: Don't increment on gameover
         float secondsAlive = Mathf.Round(Time.time - startTime);
         timeText.text = "Time: " + secondsAlive.ToString();
     }
@@ -155,6 +156,7 @@ public class GameManager : MonoBehaviour {
         return Mathf.Round(timeAlive);
     }
 
+    // TODO: Don't score if game over
     public void ObstacleAvoided() {
         obstaclesAvoided++;
         scoreText.text = "Score: " + obstaclesAvoided.ToString();
