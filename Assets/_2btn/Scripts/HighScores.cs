@@ -38,7 +38,7 @@ public class HighScores : MonoBehaviour {
     private string leaderboard = "";
     private PlayerGUID _playerGUID;
 
-    private static string leaderboardUrl = "https://dreamlo.com/lb/";
+    private static string leaderboardUrl = "https://www.dreamlo.com/lb/";
 
     void Start () {
         _playerGUID = GameObject.Find("PlayerGUID").GetComponent<PlayerGUID>();
